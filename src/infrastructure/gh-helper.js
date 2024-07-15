@@ -1,4 +1,3 @@
-
 class GhHelper {
   #cli
 
@@ -61,13 +60,13 @@ class GhHelper {
   }
 
   /**
-   * @param {string} owner The owner of the repo  
+   * @param {string} owner The owner of the repo
    * @param {string} repo The name of the repo
    * @param {string} ref The ref of the commit
    * @param {string} name The name of the check run
    * @param {string} summary The summary of the check run
    * @param {string} status  The status, can be 'queued', 'in_progress', or 'completed'
-   * @returns 
+   * @returns
    */
   async createCheckRun({ owner, repo, ref, name, summary, status }) {
     console.info(
