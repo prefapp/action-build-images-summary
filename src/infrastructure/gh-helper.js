@@ -70,10 +70,10 @@ class GhHelper {
    */
   async createCheckRun({ owner, repo, ref, name, summary, status }) {
     console.info(
-      `Creating check run for ref: ${ref} and workflow: ${workflowName}`
+      `Creating check run for ref: ${ref} and workflow: ${name}`
     )
 
-    const { data } = await octokit.rest.checks.create({
+    const { data } = await this.#cli.rest.checks.create({
       output: {
         summary
       },
@@ -85,7 +85,7 @@ class GhHelper {
     })
 
     console.info(
-      `Check run created for ref: ${ref} and workflow: ${workflowName}`
+      `Check run created for ref: ${ref} and workflow: ${name}`
     )
 
     return data
@@ -103,7 +103,7 @@ class GhHelper {
    */
   async updateCheckRun({ owner, repo, conclusion, status, summary, id }) {
     console.info(
-      `Updating check run for ref: ${ref} and workflow: ${workflowName}`
+      `Updating check run for ref: ${ref}`
     )
 
     const inputs = {
@@ -124,7 +124,7 @@ class GhHelper {
     await this.#cli.rest.checks.update(inputs)
 
     console.info(
-      `Check run updated for ref: ${ref} and workflow: ${workflowName}`
+      `Check run updated for ref: ${ref}`
     )
   }
 }
