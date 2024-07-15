@@ -29,7 +29,7 @@ describe('domain/CheckRun class', () => {
     )
 
     const newSummary = fs.readFileSync(
-      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_different', 'newSummary.md'),
+      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_different', 'newSummary.yaml'),
       'utf8'
     )
 
@@ -59,7 +59,7 @@ describe('domain/CheckRun class', () => {
     )
 
     const newSummary = fs.readFileSync(
-      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_equal', 'newSummary.md'),
+      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_equal', 'newSummary.yaml'),
       'utf8'
     )
 
@@ -88,7 +88,7 @@ describe('domain/CheckRun class', () => {
     const lastSummary = null
 
     const newSummary = fs.readFileSync(
-      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_different', 'newSummary.md'),
+      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'summaries_are_different', 'newSummary.yaml'),
       'utf8'
     )
 
@@ -113,7 +113,7 @@ describe('domain/CheckRun class', () => {
     )
 
     const newSummary = fs.readFileSync(
-      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'last_summary_is_wrong', 'newSummary.md'),
+      path.join(__dirname, 'fixtures', 'check-run', 'cases', 'last_summary_is_wrong', 'newSummary.yaml'),
       'utf8'
     )
 

@@ -1,4 +1,3 @@
-```yaml
 - build_args:
     BACKEND_URL: https://example.com
   flavor: my-flavour-4
@@ -19,4 +18,3 @@
   registries: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre
-```

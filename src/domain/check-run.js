@@ -1,3 +1,11 @@
+/**
+ * This class is used to represent a check run, and it's part of the domain layer.
+ * This a core class that is used to manage the check runs in the application, 
+ * and it is agnostic of the infrastructure layer. This means that it does not depend on
+ * any external libraries or frameworks.
+ * 
+ * It is responsible for get the summary of the check run, and merge the builds from the last summary.
+ */
 class CheckRun {
   #lastSummary
 
@@ -31,9 +39,9 @@ class CheckRun {
   get summary() {
     if (!this.#lastSummary) return this.#newSummary
 
-    const lastBuilds = this.#extractBuildsFromSummary(this.#lastSummary)
+    const lastBuilds = this.#extractBuildsFromLastSummary(this.#lastSummary)
 
-    const newBuilds = this.#extractBuildsFromSummary(this.#newSummary)
+    const newBuilds = this.#parseNewBuildsFromNewSummary(this.#newSummary)
 
     const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
 
@@ -136,7 +144,7 @@ class CheckRun {
    * The summary is a string that contains the builds in yaml format.
    * @returns {Array} The builds extracted from the summary
    */
-  #extractBuildsFromSummary(summary) {
+  #extractBuildsFromLastSummary(summary) {
     try {
       const yamlText = this.#extractYamlCodeFromMarkdown(summary)
 
@@ -145,6 +153,21 @@ class CheckRun {
       console.error(error)
 
       throw new Error('Error getting builds from summary.')
+    }
+  }
+
+  /**
+   * This method is used to get the builds from the summary
+   * The summary is a string that contains the builds in yaml format.
+   * @returns {Array} The builds extracted from the summary
+   */
+  #parseNewBuildsFromNewSummary() {
+    try {
+      return this.#textHelper.parseYaml(this.#newSummary)
+    } catch (error) {
+      console.error(error)
+
+      throw new Error('Error getting builds from new summary.')
     }
   }
 
