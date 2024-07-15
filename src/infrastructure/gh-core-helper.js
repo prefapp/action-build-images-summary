@@ -2,6 +2,7 @@ const github = require('@actions/github')
 const { CheckRunHandler } = require('../application/check-run-handler')
 const { GhHelper } = require('./gh-helper')
 const { TextHelper } = require('./text-helper')
+const core = require('@actions/core')
 
 /**
  * This function is used to get the check run manager

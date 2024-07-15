@@ -98,7 +98,7 @@ class GhHelper {
    * @param {string} id - The id of the check run
    */
   async updateCheckRun({ owner, repo, conclusion, status, summary, id }) {
-    console.info(`Updating check run for ref: ${ref}`)
+    console.info(`Updating check run for id: ${id}`)
 
     const inputs = {
       check_run_id: id,
@@ -117,7 +117,7 @@ class GhHelper {
 
     await this.#cli.rest.checks.update(inputs)
 
-    console.info(`Check run updated for ref: ${ref}`)
+    console.info(`Check run updated with id: ${id}`)
   }
 }
 
