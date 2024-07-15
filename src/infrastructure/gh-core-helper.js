@@ -10,7 +10,8 @@ const { TextHelper } = require('./text-helper')
  * @returns {CheckRunManager} The check run manager
  */
 function getContext() {
-  const { token, checkRunName, ref, conclusion, status, newSummaryPath } = getCoreInputs()
+  const { token, checkRunName, ref, conclusion, status, newSummaryPath } =
+    getCoreInputs()
 
   // Init the github context and the octokit client
   const { owner, repo } = github.repo

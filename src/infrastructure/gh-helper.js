@@ -69,9 +69,7 @@ class GhHelper {
    * @returns
    */
   async createCheckRun({ owner, repo, ref, name, summary, status }) {
-    console.info(
-      `Creating check run for ref: ${ref} and workflow: ${name}`
-    )
+    console.info(`Creating check run for ref: ${ref} and workflow: ${name}`)
 
     const { data } = await this.#cli.rest.checks.create({
       output: {
@@ -84,9 +82,7 @@ class GhHelper {
       status
     })
 
-    console.info(
-      `Check run created for ref: ${ref} and workflow: ${name}`
-    )
+    console.info(`Check run created for ref: ${ref} and workflow: ${name}`)
 
     return data
   }
@@ -102,9 +98,7 @@ class GhHelper {
    * @param {string} id - The id of the check run
    */
   async updateCheckRun({ owner, repo, conclusion, status, summary, id }) {
-    console.info(
-      `Updating check run for ref: ${ref}`
-    )
+    console.info(`Updating check run for ref: ${ref}`)
 
     const inputs = {
       check_run_id: id,
@@ -123,9 +117,7 @@ class GhHelper {
 
     await this.#cli.rest.checks.update(inputs)
 
-    console.info(
-      `Check run updated for ref: ${ref}`
-    )
+    console.info(`Check run updated for ref: ${ref}`)
   }
 }
 
