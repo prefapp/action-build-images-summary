@@ -10,14 +10,17 @@ async function run() {
   try {
     const {
       //Handler, which is an instance of the CheckRunHandler
-      //class that is used to manage the check runs
+      //class that is used to manage CRUD ops for the check run
       handler,
 
       //The conclusion of the check run to be updated
       conclusion,
 
       //The status of the check run to be updated
-      status
+      status,
+
+      //The new summary path
+      newSummaryPath
     } = getContext()
 
     // First, we need to get the last check run.
@@ -27,11 +30,18 @@ async function run() {
     if (status === 'pending') {
       await upsertCheckRun(lastCheckRun, handler, status)
     } else if (conclusion === 'success') {
-      const newSummary = fs.readFileSync(core.getInput('summary_path'), 'utf8')
+      // If the status is success, we need to get the new summary.
+      const newSummary = fs.readFileSync(newSummaryPath, 'utf8')
 
-      // If the conclusion is success, we need to update the check run with a new summary.
+      // We need to merge the summaries from the last check run and the new summary.
+      const mergedSummary = await handler.getMergedSummaries(
+        lastCheckRun.summary,
+        newSummary
+      )
+
+      // If the conclusion is success, we need to update the check run with the new summary.
       await handler.updateCheckRun(
-        newSummary,
+        mergedSummary,
         null, // when we set conclusion to success, we don't need to update the conclusion
         conclusion,
         lastCheckRun.id

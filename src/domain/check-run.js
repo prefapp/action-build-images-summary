@@ -28,7 +28,6 @@ class CheckRun {
    * The summary is a string that contains the builds in yaml format.
    * @returns {string} The summary with the builds in yaml format,
    * merged from the last summary and the new summary.
-   *
    */
   get summary() {
     if (!this.#lastSummary) return this.#newSummary
@@ -166,24 +165,24 @@ class CheckRun {
   }
 
   /**
-     * This method is used to get the builds from the summary
-     * The summary is a string that contains the builds in yaml format,
-     * but it is contained within a code block, in a markdown format.
-     * Example:
-     * ```yaml
-     * - build_args:
-            BACK_URL: https://example.com
-        flavor: my-flavor
-        image_repo: my-org/my-repo
-        image_tag: v1.1.0-pre
-        image_type: snapshots
-        manifest: {}
-        registries: my-acr.azurecr.io
-        repository: service/my-org/my-repo
-        version: v1.1.0-pre
-     * ```
-     * @returns {string} The yaml code block extracted from the markdown summary 
-     */
+   * This method is used to get the builds from the summary
+   * The summary is a string that contains the builds in yaml format,
+   * but it is contained within a code block, in a markdown format.
+   * Example:
+   * ```yaml
+   * - build_args:
+          BACK_URL: https://example.com
+      flavor: my-flavor
+      image_repo: my-org/my-repo
+      image_tag: v1.1.0-pre
+      image_type: snapshots
+      manifest: {}
+      registries: my-acr.azurecr.io
+      repository: service/my-org/my-repo
+      version: v1.1.0-pre
+    * ```
+    * @returns {string} The yaml code block extracted from the markdown summary 
+    */
   #extractYamlCodeFromMarkdown(text) {
     const yamlDelimiter = '```yaml'
 

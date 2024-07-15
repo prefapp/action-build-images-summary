@@ -9,7 +9,7 @@ const { TextHelper } = require('./text-helper')
  *
  * @returns {CheckRunManager} The check run manager
  */
-function prepareHandlerAndContext() {
+function getContext() {
   const { token, checkRunName, ref, conclusion } = getCoreInputs()
 
   // Init the github context and the octokit client
@@ -45,16 +45,18 @@ function getCoreInputs() {
 
   const token = core.getInput('token', { required: true })
 
-  const checkRunName = core.getInput('check-run-name', { required: true })
+  const checkRunName = core.getInput('check_run_name', { required: true })
 
   const ref = core.getInput('ref', { required: true })
 
   const status = core.getInput('status', { required: true })
 
-  return { token, checkRunName, ref, conclusion, status }
+  const newSummaryPath = core.getInput('summary_path', { required: true })
+
+  return { token, checkRunName, ref, conclusion, status, newSummaryPath }
 }
 
 module.exports = {
-  getContext: prepareHandlerAndContext,
+  getContext,
   getCoreInputs
 }

@@ -39,25 +39,6 @@ class CheckRunHandler {
   }
 
   /**
-   * Create or update the check run
-   */
-  async createOrUpdateCheckRun(
-    newSummary,
-    status,
-    conclusion,
-    lastSummary = null,
-    checkRunId = null
-  ) {
-    const mergedSummary = await this.getMergedSummaries(newSummary, lastSummary)
-
-    if (!lastSummary) {
-      await this.createCheckRun(mergedSummary, status)
-    } else {
-      await this.updateCheckRun(mergedSummary, status, conclusion, checkRunId)
-    }
-  }
-
-  /**
    * This method is used to get the merged summaries of the check run
    * The summary is a string that contains the builds in yaml format.
    * @param {string} newSummary - The new summary to be merged
@@ -104,15 +85,10 @@ class CheckRunHandler {
       repo: this.#repo,
       ref: this.#ref,
       name: this.#workflowName,
-      summary
-    }
-
-    if (status) {
-      inputs['status'] = status
-    }
-
-    if (conclusion) {
-      inputs['conclusion'] = conclusion
+      summary,
+      status: status || false,
+      conclusion: conclusion || false,
+      id
     }
 
     await this.#ghHelper.updateCheckRun(inputs)

@@ -1,4 +1,4 @@
-const { CheckRunHandler} = require('../src/application/check-run-handler')
+const { CheckRunHandler } = require('../src/application/check-run-handler')
 const { GhHelper } = require('../src/infrastructure/gh-helper')
 const { TextHelper } = require('../src/infrastructure/text-helper')
 
@@ -28,9 +28,6 @@ describe('application/CheckRunManager class', () => {
             ]
           }
         })
-      },
-      core: {
-        setOutput: jest.fn()
       }
     })
 
