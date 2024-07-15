@@ -1,4 +1,4 @@
-const { CheckRunManager } = require('../src/application/check-run-manager')
+const { CheckRunHandler} = require('../src/application/check-run-handler')
 const { GhHelper } = require('../src/infrastructure/gh-helper')
 const { TextHelper } = require('../src/infrastructure/text-helper')
 
@@ -37,7 +37,7 @@ describe('application/CheckRunManager class', () => {
     const expectedSummary = newSummary
 
     // Instantiate CheckRunManager
-    const checkRunManager = new CheckRunManager({
+    const handler = new CheckRunHandler({
       ghHelper: fakeGhHelper,
       textHelper: new TextHelper(),
       owner: 'test-owner',
@@ -46,7 +46,7 @@ describe('application/CheckRunManager class', () => {
       ref: 'test-ref'
     })
 
-    const finalSummary = await checkRunManager.getMergedSummaries(newSummary)
+    const finalSummary = await handler.getMergedSummaries(newSummary)
 
     expect(finalSummary).toBe(expectedSummary)
   })

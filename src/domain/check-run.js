@@ -8,20 +8,14 @@
  */
 class CheckRun {
   #lastSummary
-
   #newSummary
-
   #name
-
   #textHelper
 
   constructor({ lastSummary, newSummary, name, textHelper }) {
     this.#lastSummary = lastSummary
-
     this.#newSummary = newSummary
-
     this.#name = name
-
     this.#textHelper = textHelper
   }
 

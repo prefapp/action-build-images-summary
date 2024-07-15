@@ -6,33 +6,24 @@ const { CheckRun } = require('../domain/check-run')
  * Hexagonal Architecture, this class is responsible for managing the check run.
  * It uses the GhHelper to get the last summary and update the check run
  */
-class CheckRunManager {
+class CheckRunHandler {
   //Helper objects
   #ghHelper
-
   #textHelper
 
   //Attributes
   #owner
-
   #repo
-
   #workflowName
-
   #ref
 
   constructor({ ghHelper, textHelper, owner, repo, workflowName, ref }) {
-    this.#owner = owner
-
-    this.#repo = repo
-
-    this.#workflowName = workflowName
-
-    this.#ref = ref
-
     this.#ghHelper = ghHelper
-
     this.#textHelper = textHelper
+    this.#owner = owner
+    this.#repo = repo
+    this.#workflowName = workflowName
+    this.#ref = ref
   }
 
   /**
@@ -53,6 +44,7 @@ class CheckRunManager {
   async createOrUpdateCheckRun(
     newSummary,
     status,
+    conclusion,
     lastSummary = null,
     checkRunId = null
   ) {
@@ -61,7 +53,7 @@ class CheckRunManager {
     if (!lastSummary) {
       await this.createCheckRun(mergedSummary, status)
     } else {
-      await this.updateCheckRun(mergedSummary, status, checkRunId)
+      await this.updateCheckRun(mergedSummary, status, conclusion, checkRunId)
     }
   }
 
@@ -112,21 +104,21 @@ class CheckRunManager {
       repo: this.#repo,
       ref: this.#ref,
       name: this.#workflowName,
-      summary,
+      summary
     }
 
-    if(status) {
-      inputs["status"] = status
+    if (status) {
+      inputs['status'] = status
     }
 
-    if(conclusion) {
-      inputs["conclusion"] = conclusion
+    if (conclusion) {
+      inputs['conclusion'] = conclusion
     }
-    
+
     await this.#ghHelper.updateCheckRun(inputs)
   }
 }
 
 module.exports = {
-  CheckRunManager
+  CheckRunHandler
 }

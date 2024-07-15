@@ -1,8 +1,5 @@
 const core = require('@actions/core')
-const github = require('@actions/github')
-const { CheckRunManager } = require('./application/check-run-manager')
-const { GhHelper } = require('./infrastructure/gh-helper')
-const { TextHelper } = require('./infrastructure/text-helper')
+const { getContext } = require('./infrastructure/gh-core-helper')
 const fs = require('fs')
 
 /**
@@ -11,30 +8,44 @@ const fs = require('fs')
  */
 async function run() {
   try {
-    const { checkRunManager, conclusion, status } = getCheckRunManager()
+    const {
+      //Handler, which is an instance of the CheckRunHandler
+      //class that is used to manage the check runs
+      handler,
 
-    const lastCheckRun = await checkRunManager.getLastCheckRun()
+      //The conclusion of the check run to be updated
+      conclusion,
 
-    if(status === 'pending') {
+      //The status of the check run to be updated
+      status
+    } = getContext()
 
-      if(lastCheckRun) {
+    // First, we need to get the last check run.
+    const lastCheckRun = await handler.getLastCheckRun()
 
-        checkRunManager.
+    // If the status is pending, we need to create or update the check run.
+    if (status === 'pending') {
+      await upsertCheckRun(lastCheckRun, handler, status)
+    } else if (conclusion === 'success') {
+      const newSummary = fs.readFileSync(core.getInput('summary_path'), 'utf8')
 
+      // If the conclusion is success, we need to update the check run with a new summary.
+      await handler.updateCheckRun(
+        newSummary,
+        null, // when we set conclusion to success, we don't need to update the conclusion
+        conclusion,
+        lastCheckRun.id
+      )
 
-      }
-
-
-      await checkRunManager.createOrUpdateCheckRun({
-        
-      })
-
-
+      // If the conclusion is failure, we need to update the check run, but we keep the same summary.
+    } else if (conclusion === 'failure') {
+      await handler.updateCheckRun(
+        lastCheckRun.summary,
+        null, // when we set conclusion to failure, we don't need to update the summary
+        conclusion,
+        lastCheckRun.id
+      )
     }
-
-    const newSummary = fs.readFileSync(core.getInput("summary_path"), 'utf8')
-
-
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
@@ -42,53 +53,26 @@ async function run() {
 }
 
 /**
- * This function is used to get the check run manager
- * It gets the inputs from the core and initializes the github context and octokit client
- *
- * @returns {CheckRunManager} The check run manager
+ * This function is used to create or update the check run.
+ * @param {Object} lastCheckRun - The last check run
+ * @param {Object} handler - The check run handler
+ * @param {string} status - The status of the check run
+ * @returns {Promise<void>} Resolves when the check run is created or updated.
  */
-function getCheckRunManager() {
-  const { token, checkRunName, ref, conclusion } = getCoreInputs()
-
-  // Init the github context and the octokit client
-  const { owner, repo } = github.repo
-
-  const octokit = github.getOctokit(token)
-
-  const ghHelper = new GhHelper({ cli: octokit, core: core })
-
-  return {
-    checkRunManager: new CheckRunManager({
-      ghHelper,
-      textHelper: new TextHelper(),
-      owner,
-      repo,
-      workflowName: checkRunName,
-      ref
-    }),
-    conclusion
+async function upsertCheckRun(lastCheckRun, handler, status) {
+  // If the last check run does not exist, we need to create a new check run.
+  if (!lastCheckRun) {
+    await handler.createCheckRun('Pending...', status)
+  } else {
+    // If the last check run exists, we need to update the check run,
+    // but we keep the same summary.
+    await handler.updateCheckRun(
+      lastCheckRun.summary,
+      status,
+      null,
+      lastCheckRun.id
+    )
   }
-}
-
-/**
- * This function is used to get the core inputs
- * It gets the inputs from the core
- *
- * @returns {Object} The core inputs
- */
-
-function getCoreInputs() {
-  const conclusion = core.getInput('conclusion', { required: true })
-
-  const token = core.getInput('token', { required: true })
-
-  const checkRunName = core.getInput('check-run-name', { required: true })
-
-  const ref = core.getInput('ref', { required: true })
-
-  const status = core.getInput('status', { required: true })
-
-  return { token, checkRunName, ref, conclusion, status }
 }
 
 module.exports = {
