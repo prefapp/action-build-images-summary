@@ -51,14 +51,14 @@ class CheckRun {
    * lastBuilds = [
    * {
    *  flavor: my-flavor
-   *  registries: my-acr.azurecr.io
+   *  image_type: snapshots
    * }
    * ]
    *
    * newBuilds = [
    * {
    * flavor: my-flavor-2
-   * registries: my-acr.azurecr.io
+   * image_type: snapshots
    * }
    * ]
    *
@@ -66,11 +66,11 @@ class CheckRun {
    * mergedBuilds = [
    * {
    * flavor: my-flavor-2
-   * registries: my-acr.azurecr.io
+   * image_type: snapshots
    * },
    * {
    * flavor: my-flavor
-   * registries: my-acr.azurecr.io
+   * image_type: snapshots
    * }
    * ]
    */
@@ -126,8 +126,8 @@ class CheckRun {
   #lastBuildIsContainedInNewBuilds(lastBuild, newBuilds) {
     return newBuilds.find(
       newBuild =>
-        newBuild.flavor + newBuild.registries ===
-        lastBuild.flavor + lastBuild.registries
+        newBuild.flavor + newBuild.image_type ===
+        lastBuild.flavor + lastBuild.image_type
     )
   }
 

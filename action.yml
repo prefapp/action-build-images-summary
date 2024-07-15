@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Action build images summary update'
+description: 'Action to update summary check runs when building images'
+author: 'prefapp'
 
 # Define your inputs here.
 inputs:
