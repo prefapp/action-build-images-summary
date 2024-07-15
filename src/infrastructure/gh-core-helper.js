@@ -19,7 +19,7 @@ function getContext() {
 
   const octokit = github.getOctokit(token)
 
-  const ghHelper = new GhHelper({ cli: octokit, core: core })
+  const ghHelper = new GhHelper({ cli: octokit })
 
   return {
     handler: new CheckRunHandler({
