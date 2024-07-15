@@ -1,9 +1,9 @@
 /**
  * This class is used to represent a check run, and it's part of the domain layer.
- * This a core class that is used to manage the check runs in the application, 
+ * This a core class that is used to manage the check runs in the application,
  * and it is agnostic of the infrastructure layer. This means that it does not depend on
  * any external libraries or frameworks.
- * 
+ *
  * It is responsible for get the summary of the check run, and merge the builds from the last summary.
  */
 class CheckRun {
@@ -230,7 +230,7 @@ class CheckRun {
 
       const endDelimiter = '```'
 
-      return `${yamlDelimiter}\n${buildsYaml}${endDelimiter}`
+      return `${yamlDelimiter}\n${buildsYaml}${endDelimiter}\n`
     } catch (error) {
       console.error(error)
 
