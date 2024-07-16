@@ -111,7 +111,12 @@ need to perform some initial setup steps before you can develop your action.
 
 ### 📐 Architecture
 
-We use a minimal Hexagonal Architecture for best practices and separation of concerns. When submitting a PR, please: keep core logic isolated, divide the system into responsible layers, ensure business logic independence, use ports and adapters, design for testability, utilize dependency injection, follow coding standards, and write clear, maintainable code. This ensures a clean, efficient, and scalable codebase.
+We use a minimal Hexagonal Architecture for best practices and separation of
+concerns. When submitting a PR, please: keep core logic isolated, divide the
+system into responsible layers, ensure business logic independence, use ports
+and adapters, design for testability, utilize dependency injection, follow
+coding standards, and write clear, maintainable code. This ensures a clean,
+efficient, and scalable codebase.
 
 ![image](https://github.com/user-attachments/assets/34bc9fe4-9076-480b-8a31-e98e9df3467e)
 
