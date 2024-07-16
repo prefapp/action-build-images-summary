@@ -60,6 +60,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: 'Integration tests'
           status: completed
+          conclusion: success
           sha: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
           output: |
             {"summary":"Pending..."}  
