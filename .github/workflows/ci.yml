@@ -52,14 +52,49 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        
+      - name: Prepare Integration test
+        run: |
+          #!/bin/bash
+          content='- build_args:
+              BACKEND_URL: https://example.com
+            flavor: my-flavour-1
+            image_repo: my-org/my-repo
+            image_tag: v1.1.0-pre
+            image_type: snapshots
+            manifest: {}
+            registries: my-acr.azurecr.io
+            repository: service/my-org/my-repo
+            version: v1.1.0-pre
+          - build_args:
+              BACKEND_URL: https://example.com
+            flavor: my-flavour-4
+            image_repo: my-org/my-repo
+            image_tag: v1.1.0-pre
+            image_type: snapshots
+            manifest: {}
+            registries: my-acr.azurecr.io
+            repository: service/my-org/my-repo
+            version: v1.1.0-pre'
+            
+            echo "$content" > /tmp/build_images_results.yaml        
+        
+      - name: Test Local Action - Set Pending
+        id: test-action-pending
+        uses: ./
+        with:
+          status: pending
+          token: ${{ secrets.GITHUB_TOKEN }}
+          summary_path: /tmp/build_images_results.yaml
+          check_run_name: 'Integration tests'
+          ref: "d6302d394f614a50c07ba8a8d0a51ce1d9a612f7"
 
-      - name: Test Local Action
-        id: test-action
+      - name: Test Local Action - Set Success
+        id: test-action-success
         uses: ./
         with:
           conclusion: success
-          status: completed
           token: ${{ secrets.GITHUB_TOKEN }}
-          summary_path: /tmp/build_images_results.yaml
-          check_run_name: 'Build Images'
-          ref: ${{ github.sha }}
+          summary_path: "/tmp/build_images_results.yaml"
+          check_run_name: "Integration tests"
+          ref: "d6302d394f614a50c07ba8a8d0a51ce1d9a612f7"
