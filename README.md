@@ -111,15 +111,18 @@ need to perform some initial setup steps before you can develop your action.
 
 ### 📐 Architecture
 
-Currently we are using a minimal Hexagonal Architecture in order to follow the best practices and separation of concerns. If you open a PR against the code, please, follow this principles.
+Currently we are using a minimal Hexagonal Architecture in order to follow the
+best practices and separation of concerns. If you open a PR against the code,
+please, follow this principles.
 
 ![image](https://github.com/user-attachments/assets/34bc9fe4-9076-480b-8a31-e98e9df3467e)
 
 You can find the following layers.
+
 - **Domain**: `./src/domain`
-  - CheckRun Entity 
+  - CheckRun Entity
 - **Application**: `./src/application`
-  - CheckRunHandler 
+  - CheckRunHandler
 - **Infrastructure**: `./src/infrastructure`
   - Yaml package
-  - Github Cli (octokit, core) 
+  - Github Cli (octokit, core)
