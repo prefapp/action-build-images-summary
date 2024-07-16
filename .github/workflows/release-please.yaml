@@ -8,7 +8,7 @@ permissions:
   contents: read
   packages: read
   statuses: write
-  
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
