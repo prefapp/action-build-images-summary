@@ -29845,6 +29845,8 @@ async function run() {
  */
 async function upsertCheckRun(lastCheckRun, handler, status) {
   // If the last check run does not exist, we need to create a new check run.
+  console.dir(lastCheckRun, { depth: null })
+  process.exit(1)
   if (!lastCheckRun) {
     await handler.createCheckRun('Pending...', status)
   } else {
