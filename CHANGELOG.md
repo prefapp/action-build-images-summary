@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/prefapp/action-build-images-summary-update/compare/v1.0.0...v1.0.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* ignore changelog.md on lintering ([#6](https://github.com/prefapp/action-build-images-summary-update/issues/6)) ([bf1f6db](https://github.com/prefapp/action-build-images-summary-update/commit/bf1f6db158150e48d901ac599e88a36a22b3d525))
+
 ## 1.0.0 (2024-07-16)
 
 
