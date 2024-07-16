@@ -63,7 +63,3 @@ jobs:
           summary_path: /tmp/build_images_results.yaml
           check_run_name: 'Build Images'
           ref: ${{ github.sha }}
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
