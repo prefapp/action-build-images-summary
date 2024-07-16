@@ -73,7 +73,8 @@ class GhHelper {
 
     const { data } = await this.#cli.rest.checks.create({
       output: {
-        summary
+        summary,
+        title: name
       },
       head_sha: ref,
       name,
