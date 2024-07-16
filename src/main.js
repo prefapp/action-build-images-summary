@@ -35,7 +35,7 @@ async function run() {
 
       // We need to merge the summaries from the last check run and the new summary.
       const mergedSummary = await handler.getMergedSummaries(
-        lastCheckRun.summary,
+        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary,
         newSummary
       )
 
@@ -50,7 +50,7 @@ async function run() {
       // If the conclusion is failure, we need to update the check run, but we keep the same summary.
     } else if (conclusion === 'failure') {
       await handler.updateCheckRun(
-        lastCheckRun.summary,
+        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary,
         null, // when we set conclusion to failure, we don't need to update the summary
         conclusion,
         lastCheckRun.id
