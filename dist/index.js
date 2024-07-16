@@ -29814,8 +29814,8 @@ async function run() {
 
       // We need to merge the summaries from the last check run and the new summary.
       const mergedSummary = await handler.getMergedSummaries(
-        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary,
-        newSummary
+        newSummary,
+        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary
       )
 
       // If the conclusion is success, we need to update the check run with the new summary.
