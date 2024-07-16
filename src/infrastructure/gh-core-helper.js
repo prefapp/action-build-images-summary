@@ -22,8 +22,6 @@ function getContext() {
 
   const ghHelper = new GhHelper({ cli: octokit })
 
-  console.dir(github.context, { depth: null })
-  console.log('🍄')
   return {
     handler: new CheckRunHandler({
       ghHelper,
