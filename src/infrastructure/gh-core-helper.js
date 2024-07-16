@@ -15,7 +15,7 @@ function getContext() {
     getCoreInputs()
 
   // Init the github context and the octokit client
-  const { owner, repo } = github.repo
+  const { owner, repo } = github.context
 
   const octokit = github.getOctokit(token)
 
