@@ -29801,7 +29801,7 @@ async function run() {
     const lastCheckRun = await handler.getLastCheckRun()
 
     // If the status is pending, we need to create or update the check run.
-    if (status === 'pending') {
+    if (status === 'in_progress') {
       await upsertCheckRun(lastCheckRun, handler, status)
     } else if (conclusion === 'success') {
       // If the status is success, we need to get the new summary.
