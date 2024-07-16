@@ -29829,7 +29829,7 @@ async function run() {
       // If the conclusion is failure, we need to update the check run, but we keep the same summary.
     } else if (conclusion === 'failure') {
       await handler.updateCheckRun(
-        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary,
+        lastCheckRun.summary,
         null, // when we set conclusion to failure, we don't need to update the summary
         conclusion,
         lastCheckRun.id
