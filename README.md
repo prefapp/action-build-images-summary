@@ -5,61 +5,67 @@
 
 ## Usage
 
-This GitHub Action focuses on managing the status of check runs in relation to the process of building Docker images. The workflow sets a check run to a pending state, builds Docker images, and then updates the check run status based on the build outcome. The check run actions are dependent on the image build action since the latter generates the results file needed to finalize the check run status.
+This GitHub Action focuses on managing the status of check runs in relation to
+the process of building Docker images. The workflow sets a check run to a
+pending state, builds Docker images, and then updates the check run status based
+on the build outcome. The check run actions are dependent on the image build
+action since the latter generates the results file needed to finalize the check
+run status.
 
 ### Example
+
 ```yaml
 steps:
-     # First, we set the check-run to pending state
-     - name: Set Pending Check Run
-       id: check-run-pending
-       uses: ./
-       with:
-         status: in_progress
-         token: ${{ secrets.GITHUB_TOKEN }}
-         summary_path: /tmp/build_images_results.yaml
-         check_run_name: ${{ inputs.check_run_name }}
-         ref: ${{ inputs.ref }}
+  # First, we set the check-run to pending state
+  - name: Set Pending Check Run
+    id: check-run-pending
+    uses: ./
+    with:
+      status: in_progress
+      token: ${{ secrets.GITHUB_TOKEN }}
+      summary_path: /tmp/build_images_results.yaml
+      check_run_name: ${{ inputs.check_run_name }}
+      ref: ${{ inputs.ref }}
 
-     - name: Checkout repository to get config file
-       uses: actions/checkout@v4
-       with:
-         path: config
-   
-     - name: Build images
-       uses: prefapp/run-dagger-py@main
-       id: build-images
-       with:
-         working_directory: build
-         pyproject_path: .dagger
-         workflow: build_images
-         config_file: ../config/.github/build_images.yaml
-         ref: "feat/upload-results-artifacts"
-         vars: |
-           repo_name="${{ github.repository }}"
-           flavors="${{ inputs.flavors }}"
-           auth_strategy="${{ inputs.auth_strategy }}"
-           snapshots_registry="${{ vars.DOCKER_REGISTRY_SNAPSHOTS }}"
-           releases_registry="${{ vars.DOCKER_REGISTRY_RELEASES }}"
-           output_results="build_images_results.yaml"
-           type="${{ inputs.type }}"
-           from="${{ steps.get-tag.outputs.tag }}"
-           login_required="true"
-           ref="v1"
-           service_path="${{ fromJSON(vars.DOCKER_REGISTRIES_BASE_PATHS).services[inputs.type] }}"
-         secrets: ${{ inputs.secrets }}
+  - name: Checkout repository to get config file
+    uses: actions/checkout@v4
+    with:
+      path: config
 
-     # Complete the check with the outcome of the build images step
-     - name: Set Outcome Check Run
-       id: check-run-outcome
-       if: always()
-       uses: ./
-       with:
-         conclusion: ${{ steps.build-images.outcome }}
-         token: ${{ secrets.GITHUB_TOKEN }}
-         summary_path: '/tmp/build_images_results.yaml'
-         check_run_name: ${{ inputs.check_run_name }}
-         ref: ${{ inputs.ref }}
+  - name: Build images
+    uses: prefapp/run-dagger-py@main
+    id: build-images
+    with:
+      working_directory: build
+      pyproject_path: .dagger
+      workflow: build_images
+      config_file: ../config/.github/build_images.yaml
+      ref: 'feat/upload-results-artifacts'
+      vars: |
+        repo_name="${{ github.repository }}"
+        flavors="${{ inputs.flavors }}"
+        auth_strategy="${{ inputs.auth_strategy }}"
+        snapshots_registry="${{ vars.DOCKER_REGISTRY_SNAPSHOTS }}"
+        releases_registry="${{ vars.DOCKER_REGISTRY_RELEASES }}"
+        output_results="build_images_results.yaml"
+        type="${{ inputs.type }}"
+        from="${{ steps.get-tag.outputs.tag }}"
+        login_required="true"
+        ref="v1"
+        service_path="${{ fromJSON(vars.DOCKER_REGISTRIES_BASE_PATHS).services[inputs.type] }}"
+      secrets: ${{ inputs.secrets }}
+
+  # Complete the check with the outcome of the build images step
+  - name: Set Outcome Check Run
+    id: check-run-outcome
+    if: always()
+    uses: ./
+    with:
+      conclusion: ${{ steps.build-images.outcome }}
+      token: ${{ secrets.GITHUB_TOKEN }}
+      summary_path: '/tmp/build_images_results.yaml'
+      check_run_name: ${{ inputs.check_run_name }}
+      ref: ${{ inputs.ref }}
 ```
 
 ## Development
