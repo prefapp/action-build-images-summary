@@ -29718,12 +29718,15 @@ class GhHelper {
    * @param {string} summary - The summary of the check run
    * @param {string} id - The id of the check run
    */
-  async updateCheckRun({ owner, repo, conclusion, status, summary, id }) {
+  async updateCheckRun({ owner, repo, conclusion, status, summary, name, id }) {
     console.info(`Updating check run for id: ${id}`)
 
     const inputs = {
       check_run_id: id,
-      output: { summary },
+      output: {
+        summary,
+        title: name
+      },
       owner,
       repo
     }
