@@ -1,8 +1,8 @@
 {
-  "name": "javascript-action",
-  "description": "GitHub Actions JavaScript Template",
+  "name": "build-images-summary-update",
+  "description": "Action to update summary check runs when building images",
   "version": "0.0.0",
-  "author": "",
+  "author": "prefapp",
   "private": true,
   "homepage": "https://github.com/actions/javascript-action#readme",
   "repository": {
