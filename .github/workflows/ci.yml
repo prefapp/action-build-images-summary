@@ -63,7 +63,7 @@ jobs:
           conclusion: success
           sha: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
           output: |
-            {"summary":"Pending..."}  
+            {"summary":"Pending..."}
 
       - name: Prepare Integration test
         run: |
