@@ -132,8 +132,20 @@ describe('domain/CheckRun class', () => {
         'fixtures',
         'check-run',
         'cases',
-        'summaries_are_different',
+        'last_summary_does_not_exist',
         'newSummary.yaml'
+      ),
+      'utf8'
+    )
+
+    const expectedSummary = fs.readFileSync(
+      path.join(
+        __dirname,
+        'fixtures',
+        'check-run',
+        'cases',
+        'last_summary_does_not_exist',
+        'mergedSummary.md'
       ),
       'utf8'
     )
@@ -148,7 +160,7 @@ describe('domain/CheckRun class', () => {
       textHelper: new TextHelper()
     })
 
-    expect(checkRun.summary).toBe(newSummary)
+    expect(checkRun.summary).toBe(expectedSummary)
   })
 
   it('throws an error if summary is wrong', async () => {

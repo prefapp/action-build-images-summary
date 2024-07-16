@@ -29333,7 +29333,7 @@ class CheckRun {
    */
   get summary() {
     if (!this.#lastSummary || this.#lastSummary === 'Pending...')
-      return this.#newSummary
+      return this.#dumpFinalSummary(this.#newSummary)
 
     const lastBuilds = this.#extractBuildsFromLastSummary(this.#lastSummary)
 
@@ -29413,8 +29413,9 @@ class CheckRun {
         }
       }
 
-      // Return mergedBuilds concatenated with remaining newBuilds
-      return mergedBuilds.concat(newBuilds)
+      // Return mergedBuilds concatenated with remaining newBuilds,
+      // in yaml text format
+      return this.#textHelper.dumpYaml(mergedBuilds.concat(newBuilds))
     } catch (error) {
       console.error(error)
 
@@ -29518,10 +29519,8 @@ class CheckRun {
    * @returns {string} The final summary with the builds in yaml format,
    * contained within a code block, in a markdown format.
    */
-  #dumpFinalSummary(builds) {
+  #dumpFinalSummary(buildsYaml) {
     try {
-      const buildsYaml = this.#textHelper.dumpYaml(builds)
-
       const yamlDelimiter = '```yaml'
 
       const endDelimiter = '```'
@@ -29821,7 +29820,7 @@ async function run() {
       // If the conclusion is success, we need to update the check run with the new summary.
       await handler.updateCheckRun(
         mergedSummary,
-        null, // when we set conclusion to success, we don't need to update the conclusion
+        null, // when we set conclusion to success, we don't need to update the status
         conclusion,
         lastCheckRun.id
       )
@@ -29830,7 +29829,7 @@ async function run() {
     } else if (conclusion === 'failure') {
       await handler.updateCheckRun(
         lastCheckRun.summary,
-        null, // when we set conclusion to failure, we don't need to update the summary
+        null, // when we set conclusion to failure, we don't need to update the status
         conclusion,
         lastCheckRun.id
       )

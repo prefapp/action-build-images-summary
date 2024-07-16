@@ -42,7 +42,7 @@ async function run() {
       // If the conclusion is success, we need to update the check run with the new summary.
       await handler.updateCheckRun(
         mergedSummary,
-        null, // when we set conclusion to success, we don't need to update the conclusion
+        null, // when we set conclusion to success, we don't need to update the status
         conclusion,
         lastCheckRun.id
       )
@@ -51,7 +51,7 @@ async function run() {
     } else if (conclusion === 'failure') {
       await handler.updateCheckRun(
         lastCheckRun.summary,
-        null, // when we set conclusion to failure, we don't need to update the summary
+        null, // when we set conclusion to failure, we don't need to update the status
         conclusion,
         lastCheckRun.id
       )

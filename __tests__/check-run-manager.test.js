@@ -9,7 +9,12 @@ describe('application/CheckRunManager class', () => {
   it('can set the right output without lastSummary', async () => {
     // Get faked lastSummary
     const newSummary = fs.readFileSync(
-      path.join(__dirname, 'fixtures', 'check-run-manager', 'lastSummary.md'),
+      path.join(__dirname, 'fixtures', 'check-run-manager', 'newSummary.yaml'),
+      'utf8'
+    )
+
+    const expectedSummary = fs.readFileSync(
+      path.join(__dirname, 'fixtures', 'check-run-manager', 'mergedSummary.md'),
       'utf8'
     )
 
@@ -30,8 +35,6 @@ describe('application/CheckRunManager class', () => {
         })
       }
     })
-
-    const expectedSummary = newSummary
 
     // Instantiate CheckRunManager
     const handler = new CheckRunHandler({
