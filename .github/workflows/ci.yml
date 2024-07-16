@@ -57,7 +57,12 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 1000
+          conclusion: success
+          status: completed
+          token: ${{ secrets.GITHUB_TOKEN }}
+          summary_path: /tmp/build_images_results.yaml
+          check_run_name: 'Build Images'
+          ref: ${{ github.sha }}
 
       - name: Print Output
         id: output
