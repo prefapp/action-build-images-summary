@@ -31,6 +31,8 @@ class CheckRunHandler {
    */
   async createCheckRun(summary, status) {
     await this.#ghHelper.createCheckRun({
+      owner: this.#owner,
+      repo: this.#repo,
       ref: this.#ref,
       name: this.#workflowName,
       summary,
