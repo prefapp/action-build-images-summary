@@ -29332,7 +29332,8 @@ class CheckRun {
    * merged from the last summary and the new summary.
    */
   get summary() {
-    if (!this.#lastSummary) return this.#newSummary
+    if (!this.#lastSummary || this.#lastSummary === 'Pending...')
+      return this.#newSummary
 
     const lastBuilds = this.#extractBuildsFromLastSummary(this.#lastSummary)
 
