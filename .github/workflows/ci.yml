@@ -52,7 +52,7 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-        
+
       - name: Prepare Integration test
         run: |
           #!/bin/bash
@@ -77,8 +77,8 @@ jobs:
             repository: service/my-org/my-repo
             version: v1.1.0-pre'
             
-            echo "$content" > /tmp/build_images_results.yaml        
-        
+            echo "$content" > /tmp/build_images_results.yaml
+
       - name: Test Local Action - Set Pending
         id: test-action-pending
         uses: ./
@@ -87,7 +87,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           summary_path: /tmp/build_images_results.yaml
           check_run_name: 'Integration tests'
-          ref: "d6302d394f614a50c07ba8a8d0a51ce1d9a612f7"
+          ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
 
       - name: Test Local Action - Set Success
         id: test-action-success
@@ -95,6 +95,6 @@ jobs:
         with:
           conclusion: success
           token: ${{ secrets.GITHUB_TOKEN }}
-          summary_path: "/tmp/build_images_results.yaml"
-          check_run_name: "Integration tests"
-          ref: "d6302d394f614a50c07ba8a8d0a51ce1d9a612f7"
+          summary_path: '/tmp/build_images_results.yaml'
+          check_run_name: 'Integration tests'
+          ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
