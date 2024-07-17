@@ -95,7 +95,6 @@ jobs:
         id: test-action-pending
         uses: ./
         with:
-          status: in_progress
           token: ${{ secrets.GITHUB_TOKEN }}
           summary_path: /tmp/build_images_results.yaml
           check_run_name: 'Integration tests'
