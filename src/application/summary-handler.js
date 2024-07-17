@@ -27,6 +27,8 @@ async function updateSummary(
   let finalSummary = false
 
   if (conclusion === 'success') {
+    console.error('2')
+    console.error(conclusion)
     // If the status is success, we need to get the new summary.
     const newSummary = fs.readFileSync(newSummaryPath, 'utf8')
 
