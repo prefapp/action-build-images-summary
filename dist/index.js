@@ -29608,6 +29608,8 @@ class CheckRun {
     * @returns {string} The yaml code block extracted from the markdown summary 
     */
   #extractYamlCodeFromMarkdown(text) {
+    console.info(`Extracting yaml code from markdown summary`)
+    console.info(text)
     const yamlDelimiter = '```yaml'
 
     const codeDelimiter = '```'
