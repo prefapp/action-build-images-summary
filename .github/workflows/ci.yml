@@ -112,3 +112,12 @@ jobs:
           check_run_name: 'Integration tests'
           ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
           op: 'complete-check-run'
+
+      - name: Test Local Action - Set Success
+        id: test-action-get
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check_run_name: 'Integration tests'
+          ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
+          op: 'get-last-summary'
