@@ -11,8 +11,6 @@ class CheckRun {
   #newSummary
   #name
   #textHelper
-  #conclusion
-  #status
 
   constructor({ lastSummary, newSummary, name, textHelper }) {
     this.#lastSummary = lastSummary

@@ -75,7 +75,7 @@ class CheckRunHandler {
     )
 
     const { summary } = await this.getLastCheckRun()
-
+    console.info('Summary: -- ', summary)
     const checkRun = new CheckRun({
       summary,
       newSummary: null,
@@ -106,8 +106,6 @@ class CheckRunHandler {
    * @param {string} summary - The summary to be updated
    */
   async updateCheckRun(summary, status, conclusion, id) {
-    console.info('CONCLUSION', conclusion)
-
     const inputs = {
       owner: this.#owner,
       repo: this.#repo,

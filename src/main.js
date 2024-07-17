@@ -13,7 +13,7 @@ const fs = require('fs')
  */
 async function run() {
   try {
-    const { handler, conclusion, status, newSummaryPath, op } = getContext()
+    const { handler, conclusion, newSummaryPath, op } = getContext()
     const lastCheckRun = await handler.getLastCheckRun()
 
     switch (op) {

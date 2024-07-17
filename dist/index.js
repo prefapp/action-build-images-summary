@@ -29268,7 +29268,7 @@ class CheckRunHandler {
     )
 
     const { summary } = await this.getLastCheckRun()
-
+    console.info('Summary: -- ', summary)
     const checkRun = new CheckRun({
       summary,
       newSummary: null,
@@ -29299,8 +29299,6 @@ class CheckRunHandler {
    * @param {string} summary - The summary to be updated
    */
   async updateCheckRun(summary, status, conclusion, id) {
-    console.info('CONCLUSION', conclusion)
-
     const inputs = {
       owner: this.#owner,
       repo: this.#repo,
@@ -29428,8 +29426,6 @@ class CheckRun {
   #newSummary
   #name
   #textHelper
-  #conclusion
-  #status
 
   constructor({ lastSummary, newSummary, name, textHelper }) {
     this.#lastSummary = lastSummary
@@ -29924,7 +29920,7 @@ const fs = __nccwpck_require__(7147)
  */
 async function run() {
   try {
-    const { handler, conclusion, status, newSummaryPath, op } = getContext()
+    const { handler, conclusion, newSummaryPath, op } = getContext()
     const lastCheckRun = await handler.getLastCheckRun()
 
     switch (op) {
