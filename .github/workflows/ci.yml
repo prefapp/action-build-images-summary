@@ -125,5 +125,3 @@ jobs:
       - name: Test Local Action - Get Last Summary Output
         run: |
           echo "${{ steps.test-action-get.outputs.last_summary}}"
-        
-     
