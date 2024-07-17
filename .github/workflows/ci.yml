@@ -100,6 +100,7 @@ jobs:
           summary_path: /tmp/build_images_results.yaml
           check_run_name: 'Integration tests'
           ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
+          op: 'init-check-run'
 
       - name: Test Local Action - Set Success
         id: test-action-success
@@ -110,3 +111,4 @@ jobs:
           summary_path: '/tmp/build_images_results.yaml'
           check_run_name: 'Integration tests'
           ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
+          op: 'complete-check-run'

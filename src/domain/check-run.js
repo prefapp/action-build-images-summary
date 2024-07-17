@@ -11,6 +11,8 @@ class CheckRun {
   #newSummary
   #name
   #textHelper
+  #conclusion
+  #status
 
   constructor({ lastSummary, newSummary, name, textHelper }) {
     this.#lastSummary = lastSummary
@@ -40,6 +42,13 @@ class CheckRun {
     const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
 
     return this.#dumpFinalSummary(mergedBuilds)
+  }
+
+  /**
+   * This method is used to get the last summary of the check run
+   */
+  get lastSummary() {
+    return this.#extractYamlCodeFromMarkdown(this.#lastSummary)
   }
 
   /**
