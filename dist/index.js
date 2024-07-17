@@ -29299,7 +29299,7 @@ class CheckRunHandler {
    * @param {string} summary - The summary to be updated
    */
   async updateCheckRun(summary, status, conclusion, id) {
-    console.log('CONCLUSION', conclusion)
+    console.info('CONCLUSION', conclusion)
 
     const inputs = {
       owner: this.#owner,
