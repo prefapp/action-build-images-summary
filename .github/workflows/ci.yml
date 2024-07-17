@@ -122,7 +122,7 @@ jobs:
           ref: 'd6302d394f614a50c07ba8a8d0a51ce1d9a612f7'
           op: 'get-last-summary'
 
-      - name: Test Local Action - Get Last Summary
+      - name: Test Local Action - Get Last Summary Output
         run: |
           echo "${{ steps.test-action-get.outputs.last_summary}}"
         
