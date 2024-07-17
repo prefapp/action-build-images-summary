@@ -29371,6 +29371,11 @@ async function updateSummary(
     throw new Error('Error getting the final summary.')
   }
 
+  //summary, status, conclusion, id
+  console.info('Updating check run...')
+  console.info(`Summary: ${finalSummary}`)
+  console.info(`Status: ${conclusion}`)
+  console.info(`Id: ${lastCheckRun.id}`)
   await handler.updateCheckRun(
     finalSummary,
     null, // when we set conclusion to failure, we don't need to update the status
