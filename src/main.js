@@ -23,6 +23,7 @@ async function run() {
         break
       }
       case 'complete-check-run': {
+        console.error('<<<<<<<............>>>>>>>>>>>>>>')
         await updateSummary(
           lastCheckRun,
           handler,
