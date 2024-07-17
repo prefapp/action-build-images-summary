@@ -11,7 +11,7 @@ const core = require('@actions/core')
  * @returns {CheckRunManager} The check run manager
  */
 function getContext() {
-  const { token, checkRunName, ref, conclusion, status, newSummaryPath, op } =
+  const { token, checkRunName, ref, conclusion, newSummaryPath, op } =
     getCoreInputs()
 
   // Init the github context and the octokit client
@@ -32,7 +32,6 @@ function getContext() {
       ref
     }),
     conclusion,
-    status,
     newSummaryPath,
     op
   }
@@ -56,11 +55,9 @@ function getCoreInputs() {
 
   const ref = core.getInput('ref', { required: true })
 
-  const status = core.getInput('status', { required: true })
-
   const newSummaryPath = core.getInput('summary_path', { required: true })
 
-  return { token, checkRunName, ref, conclusion, status, newSummaryPath, op }
+  return { token, checkRunName, ref, conclusion, newSummaryPath, op }
 }
 
 module.exports = {

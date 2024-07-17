@@ -7,10 +7,6 @@ inputs:
     description: 'Check run conclusion'
     required: true
     default: 'success'
-  status:
-    description: 'Check run status'
-    required: true
-    default: 'completed'
   token:
     description: 'GitHub token'
     required: true
