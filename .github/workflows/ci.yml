@@ -106,7 +106,7 @@ jobs:
         id: test-action-success
         uses: ./
         with:
-          conclusion: "success"
+          conclusion: 'success'
           token: ${{ secrets.GITHUB_TOKEN }}
           summary_path: '/tmp/build_images_results.yaml'
           check_run_name: 'Integration tests'
