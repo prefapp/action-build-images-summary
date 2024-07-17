@@ -77,7 +77,7 @@ class CheckRunHandler {
     const { summary } = await this.getLastCheckRun()
     console.info('Summary: -- ', summary)
     const checkRun = new CheckRun({
-      summary,
+      lastSummary: summary,
       newSummary: null,
       name: this.workflowName,
       textHelper: this.#textHelper
