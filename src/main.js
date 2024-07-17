@@ -14,7 +14,6 @@ const fs = require('fs')
 async function run() {
   try {
     const { handler, conclusion, status, newSummaryPath, op } = getContext()
-    console.error(conclusion)
     const lastCheckRun = await handler.getLastCheckRun()
 
     switch (op) {
@@ -23,14 +22,7 @@ async function run() {
         break
       }
       case 'complete-check-run': {
-        console.error('<<<<<<<............>>>>>>>>>>>>>>')
-        await updateSummary(
-          lastCheckRun,
-          handler,
-          status,
-          conclusion,
-          newSummaryPath
-        )
+        await updateSummary(lastCheckRun, handler, conclusion, newSummaryPath)
         break
       }
       case 'get-last-summary': {

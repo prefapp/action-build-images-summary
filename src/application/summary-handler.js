@@ -19,15 +19,14 @@ async function updateSummary(
   conclusion,
   newSummaryPath
 ) {
-  if (!['success', 'failure'].includes(conclusion))
+  if (!['success', 'failure'].includes(conclusion)) {
     throw new Error(
       `Invalid conclusion: ${conclusion} input. Conclusion must be either 'success' or 'failure'.`
     )
+  }
 
   let finalSummary = false
 
-  console.error('2')
-  console.error(conclusion)
   if (conclusion === 'success') {
     // If the status is success, we need to get the new summary.
     const newSummary = fs.readFileSync(newSummaryPath, 'utf8')
@@ -45,11 +44,6 @@ async function updateSummary(
     throw new Error('Error getting the final summary.')
   }
 
-  //summary, status, conclusion, id
-  console.info('Updating check run...')
-  console.info(`Summary: ${finalSummary}`)
-  console.info(`Status: ${conclusion}`)
-  console.info(`Id: ${lastCheckRun.id}`)
   await handler.updateCheckRun(
     finalSummary,
     null, // when we set conclusion to failure, we don't need to update the status
