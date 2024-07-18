@@ -1,4 +1,4 @@
-# Action Build Images Summary Update
+# Action Build Images Summary
 
 [![GitHub Super-Linter](https://github.com/prefapp/action-build-images-summary-update/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/prefapp/action-build-images-summary-update/actions/workflows/ci.yml/badge.svg)
@@ -21,11 +21,11 @@ steps:
     id: check-run-pending
     uses: ./
     with:
-      status: in_progress
       token: ${{ secrets.GITHUB_TOKEN }}
       summary_path: /tmp/build_images_results.yaml
       check_run_name: ${{ inputs.check_run_name }}
       ref: ${{ inputs.ref }}
+      op: 'init-check-run'
 
   - name: Checkout repository to get config file
     uses: actions/checkout@v4
@@ -66,6 +66,16 @@ steps:
       summary_path: '/tmp/build_images_results.yaml'
       check_run_name: ${{ inputs.check_run_name }}
       ref: ${{ inputs.ref }}
+      op: 'complete-check-run'
+
+  - name: Get
+    id: check-run-outcome
+    uses: ./
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      check_run_name: ${{ inputs.check_run_name }}
+      ref: ${{ inputs.ref }}
+      op: 'get-last-summary'
 ```
 
 ## Development
