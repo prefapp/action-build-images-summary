@@ -15,7 +15,9 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
       - uses: actions/checkout@v4
       # https://github.com/googleapis/release-please-action?tab=readme-ov-file#creating-majorminor-tags
       - name: tag major and minor versions
