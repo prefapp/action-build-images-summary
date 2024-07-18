@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/prefapp/action-build-images-summary/compare/v1.1.0...v1.2.0) (2024-07-18)
+
+
+### Features
+
+* output last summary ([#10](https://github.com/prefapp/action-build-images-summary/issues/10)) ([3771ab3](https://github.com/prefapp/action-build-images-summary/commit/3771ab325a6a891139f8510d620f474b132ba001))
+
 ## [1.1.0](https://github.com/prefapp/action-build-images-summary-update/compare/v1.0.1...v1.1.0) (2024-07-16)
 
 

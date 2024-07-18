@@ -1,7 +1,7 @@
 {
   "name": "action-build-images-summary",
   "description": "Action to update summary check runs when building images",
-  "version": "0.0.0",
+  "version": "1.2.0",
   "author": "prefapp",
   "private": true,
   "homepage": "https://github.com/actions/javascript-action#readme",
