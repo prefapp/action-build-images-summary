@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2024-07-18)
+
+
+### Features
+
+* config release please ([#12](https://github.com/prefapp/action-build-images-summary/issues/12)) ([b17ffe7](https://github.com/prefapp/action-build-images-summary/commit/b17ffe7c70d3e492323734fa57f17b04662c52d1))
+
 ## [1.1.0](https://github.com/prefapp/action-build-images-summary-update/compare/v1.0.1...v1.1.0) (2024-07-16)
 
 
