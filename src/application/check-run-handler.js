@@ -63,6 +63,30 @@ class CheckRunHandler {
   }
 
   /**
+   * This method is used to get the merged summaries of the check run
+   * The summary is a string that contains the builds in yaml format.
+   * @param {string} newSummary - The new summary to be merged
+   * @returns {string} The merged summary with the builds in yaml format,
+   * merged from the last summary and the new summary.
+   */
+  async getLastSummary() {
+    console.info(
+      `Get check run for ref: ${this.#ref} and workflow: ${this.#workflowName}`
+    )
+
+    const { summary } = await this.getLastCheckRun()
+    console.info('Summary: -- ', summary)
+    const checkRun = new CheckRun({
+      lastSummary: summary,
+      newSummary: null,
+      name: this.workflowName,
+      textHelper: this.#textHelper
+    })
+
+    return checkRun.lastSummary
+  }
+
+  /**
    * This method is used to get the last summary of the check run
    * It uses the GhHelper to get the last summary
    * @returns {string} The last summary of the check run

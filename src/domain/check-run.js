@@ -43,6 +43,13 @@ class CheckRun {
   }
 
   /**
+   * This method is used to get the last summary of the check run
+   */
+  get lastSummary() {
+    return this.#extractYamlCodeFromMarkdown(this.#lastSummary)
+  }
+
+  /**
    * This method is used to merge the builds from the last summary with the new builds
    * The comparison is based on the flavor and registries of the builds.
    * @returns {Array} The merged builds
@@ -186,6 +193,8 @@ class CheckRun {
     * @returns {string} The yaml code block extracted from the markdown summary 
     */
   #extractYamlCodeFromMarkdown(text) {
+    console.info(`Extracting yaml code from markdown summary`)
+    console.info(text)
     const yamlDelimiter = '```yaml'
 
     const codeDelimiter = '```'

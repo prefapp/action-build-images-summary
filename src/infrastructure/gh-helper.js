@@ -101,6 +101,12 @@ class GhHelper {
   async updateCheckRun({ owner, repo, conclusion, status, summary, name, id }) {
     console.info(`Updating check run for id: ${id}`)
 
+    console.log('CONCLUSION', conclusion)
+    console.log('STATUS', status)
+    console.log('SUMMARY', summary)
+    console.log('NAME', name)
+    console.log('ID', id)
+
     const inputs = {
       check_run_id: id,
       output: {

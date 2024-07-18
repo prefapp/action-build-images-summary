@@ -29256,6 +29256,30 @@ class CheckRunHandler {
   }
 
   /**
+   * This method is used to get the merged summaries of the check run
+   * The summary is a string that contains the builds in yaml format.
+   * @param {string} newSummary - The new summary to be merged
+   * @returns {string} The merged summary with the builds in yaml format,
+   * merged from the last summary and the new summary.
+   */
+  async getLastSummary() {
+    console.info(
+      `Get check run for ref: ${this.#ref} and workflow: ${this.#workflowName}`
+    )
+
+    const { summary } = await this.getLastCheckRun()
+    console.info('Summary: -- ', summary)
+    const checkRun = new CheckRun({
+      lastSummary: summary,
+      newSummary: null,
+      name: this.workflowName,
+      textHelper: this.#textHelper
+    })
+
+    return checkRun.lastSummary
+  }
+
+  /**
    * This method is used to get the last summary of the check run
    * It uses the GhHelper to get the last summary
    * @returns {string} The last summary of the check run
@@ -29292,6 +29316,95 @@ class CheckRunHandler {
 
 module.exports = {
   CheckRunHandler
+}
+
+
+/***/ }),
+
+/***/ 585:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const fs = __nccwpck_require__(7147)
+/**
+ * This function is used to get the last summary of the check run.
+ */
+async function getLastSummary(handler) {
+  return await handler.getLastSummary()
+}
+
+/**
+ * @param {*} lastCheckRun {CheckRun}
+ * @param {*} handler {CheckRunHandler}
+ * @param {*} conclusion {string}
+ * @param {*} newSummaryPath {string}
+ * @returns {Promise<void>} Resolves when the summary is updated.
+ */
+async function updateSummary(
+  lastCheckRun,
+  handler,
+  conclusion,
+  newSummaryPath
+) {
+  if (!['success', 'failure'].includes(conclusion)) {
+    throw new Error(
+      `Invalid conclusion: ${conclusion} input. Conclusion must be either 'success' or 'failure'.`
+    )
+  }
+
+  let finalSummary = false
+
+  if (conclusion === 'success') {
+    // If the status is success, we need to get the new summary.
+    const newSummary = fs.readFileSync(newSummaryPath, 'utf8')
+
+    // We need to merge the summaries from the last check run and the new summary.
+    finalSummary = await handler.getMergedSummaries(
+      newSummary,
+      lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary
+    )
+  } else if (conclusion === 'failure') {
+    finalSummary = lastCheckRun.summary
+  }
+
+  if (!finalSummary) {
+    throw new Error('Error getting the final summary.')
+  }
+
+  await handler.updateCheckRun(
+    finalSummary,
+    null, // when we set conclusion to failure, we don't need to update the status
+    conclusion,
+    lastCheckRun.id
+  )
+}
+
+/**
+ * This function is used to create or update the check run.
+ * @param {Object} lastCheckRun - The last check run
+ * @param {Object} handler - The check run handler
+ * @param {string} status - The status of the check run
+ * @returns {Promise<void>} Resolves when the check run is created or updated.
+ */
+async function upsertSummary(lastCheckRun, handler, status) {
+  // If the last check run does not exist, we need to create a new check run.
+  if (!lastCheckRun) {
+    await handler.createCheckRun('Pending...', status)
+  } else {
+    // If the last check run exists, we need to update the check run,
+    // but we keep the same summary.
+    await handler.updateCheckRun(
+      lastCheckRun.summary,
+      status,
+      null,
+      lastCheckRun.id
+    )
+  }
+}
+
+module.exports = {
+  getLastSummary,
+  updateSummary,
+  upsertSummary
 }
 
 
@@ -29342,6 +29455,13 @@ class CheckRun {
     const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
 
     return this.#dumpFinalSummary(mergedBuilds)
+  }
+
+  /**
+   * This method is used to get the last summary of the check run
+   */
+  get lastSummary() {
+    return this.#extractYamlCodeFromMarkdown(this.#lastSummary)
   }
 
   /**
@@ -29488,6 +29608,8 @@ class CheckRun {
     * @returns {string} The yaml code block extracted from the markdown summary 
     */
   #extractYamlCodeFromMarkdown(text) {
+    console.info(`Extracting yaml code from markdown summary`)
+    console.info(text)
     const yamlDelimiter = '```yaml'
 
     const codeDelimiter = '```'
@@ -29557,7 +29679,7 @@ const core = __nccwpck_require__(2186)
  * @returns {CheckRunManager} The check run manager
  */
 function getContext() {
-  const { token, checkRunName, ref, conclusion, status, newSummaryPath } =
+  const { token, checkRunName, ref, conclusion, newSummaryPath, op } =
     getCoreInputs()
 
   // Init the github context and the octokit client
@@ -29578,8 +29700,8 @@ function getContext() {
       ref
     }),
     conclusion,
-    status,
-    newSummaryPath
+    newSummaryPath,
+    op
   }
 }
 
@@ -29595,15 +29717,15 @@ function getCoreInputs() {
 
   const token = core.getInput('token', { required: true })
 
+  const op = core.getInput('op', { required: true })
+
   const checkRunName = core.getInput('check_run_name', { required: true })
 
   const ref = core.getInput('ref', { required: true })
 
-  const status = core.getInput('status', { required: true })
-
   const newSummaryPath = core.getInput('summary_path', { required: true })
 
-  return { token, checkRunName, ref, conclusion, status, newSummaryPath }
+  return { token, checkRunName, ref, conclusion, newSummaryPath, op }
 }
 
 module.exports = {
@@ -29720,6 +29842,12 @@ class GhHelper {
   async updateCheckRun({ owner, repo, conclusion, status, summary, name, id }) {
     console.info(`Updating check run for id: ${id}`)
 
+    console.log('CONCLUSION', conclusion)
+    console.log('STATUS', status)
+    console.log('SUMMARY', summary)
+    console.log('NAME', name)
+    console.log('ID', id)
+
     const inputs = {
       check_run_id: id,
       output: {
@@ -29778,6 +29906,11 @@ module.exports = {
 
 const core = __nccwpck_require__(2186)
 const { getContext } = __nccwpck_require__(4599)
+const {
+  updateSummary,
+  getLastSummary,
+  upsertSummary
+} = __nccwpck_require__(585)
 const fs = __nccwpck_require__(7147)
 
 /**
@@ -29786,80 +29919,32 @@ const fs = __nccwpck_require__(7147)
  */
 async function run() {
   try {
-    const {
-      //Handler, which is an instance of the CheckRunHandler
-      //class that is used to manage CRUD ops for the check run
-      handler,
-
-      //The conclusion of the check run to be updated
-      conclusion,
-
-      //The status of the check run to be updated
-      status,
-
-      //The new summary path
-      newSummaryPath
-    } = getContext()
-
-    // First, we need to get the last check run.
+    const { handler, conclusion, newSummaryPath, op } = getContext()
     const lastCheckRun = await handler.getLastCheckRun()
 
-    // If the status is pending, we need to create or update the check run.
-    if (status === 'in_progress') {
-      await upsertCheckRun(lastCheckRun, handler, status)
-    } else if (conclusion === 'success') {
-      // If the status is success, we need to get the new summary.
-      const newSummary = fs.readFileSync(newSummaryPath, 'utf8')
-
-      // We need to merge the summaries from the last check run and the new summary.
-      const mergedSummary = await handler.getMergedSummaries(
-        newSummary,
-        lastCheckRun.summary === 'Pending...' ? null : lastCheckRun.summary
-      )
-
-      // If the conclusion is success, we need to update the check run with the new summary.
-      await handler.updateCheckRun(
-        mergedSummary,
-        null, // when we set conclusion to success, we don't need to update the status
-        conclusion,
-        lastCheckRun.id
-      )
-
-      // If the conclusion is failure, we need to update the check run, but we keep the same summary.
-    } else if (conclusion === 'failure') {
-      await handler.updateCheckRun(
-        lastCheckRun.summary,
-        null, // when we set conclusion to failure, we don't need to update the status
-        conclusion,
-        lastCheckRun.id
-      )
+    switch (op) {
+      case 'init-check-run': {
+        await upsertSummary(lastCheckRun, handler, 'in_progress')
+        break
+      }
+      case 'complete-check-run': {
+        await updateSummary(lastCheckRun, handler, conclusion, newSummaryPath)
+        break
+      }
+      case 'get-last-summary': {
+        const summary = await getLastSummary(handler)
+        core.setOutput('last_summary', summary)
+        break
+      }
+      default:
+        throw new Error(
+          `Invalid operation: ${op} input. Operation must be either 'init-check-run', 'complete-check-run', or 'get-last-summary'.`
+        )
     }
+    // First, we need to get the last check run.
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
-  }
-}
-
-/**
- * This function is used to create or update the check run.
- * @param {Object} lastCheckRun - The last check run
- * @param {Object} handler - The check run handler
- * @param {string} status - The status of the check run
- * @returns {Promise<void>} Resolves when the check run is created or updated.
- */
-async function upsertCheckRun(lastCheckRun, handler, status) {
-  // If the last check run does not exist, we need to create a new check run.
-  if (!lastCheckRun) {
-    await handler.createCheckRun('Pending...', status)
-  } else {
-    // If the last check run exists, we need to update the check run,
-    // but we keep the same summary.
-    await handler.updateCheckRun(
-      lastCheckRun.summary,
-      status,
-      null,
-      lastCheckRun.id
-    )
   }
 }
 

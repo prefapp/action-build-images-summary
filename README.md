@@ -21,11 +21,11 @@ steps:
     id: check-run-pending
     uses: ./
     with:
-      status: in_progress
       token: ${{ secrets.GITHUB_TOKEN }}
       summary_path: /tmp/build_images_results.yaml
       check_run_name: ${{ inputs.check_run_name }}
       ref: ${{ inputs.ref }}
+      op: 'init-check-run'
 
   - name: Checkout repository to get config file
     uses: actions/checkout@v4
@@ -66,6 +66,16 @@ steps:
       summary_path: '/tmp/build_images_results.yaml'
       check_run_name: ${{ inputs.check_run_name }}
       ref: ${{ inputs.ref }}
+      op: 'complete-check-run'
+
+  - name: Get
+    id: check-run-outcome
+    uses: ./
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      check_run_name: ${{ inputs.check_run_name }}
+      ref: ${{ inputs.ref }}
+      op: 'get-last-summary'
 ```
 
 ## Development
