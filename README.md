@@ -1,4 +1,4 @@
-# Action Build Images Summary Update
+# Action Build Images Summary
 
 [![GitHub Super-Linter](https://github.com/prefapp/action-build-images-summary-update/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/prefapp/action-build-images-summary-update/actions/workflows/ci.yml/badge.svg)
