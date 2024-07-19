@@ -104,10 +104,16 @@ class CheckRun {
 
           const buildObj = new Build(build)
 
-          lastBuildsMap[buildObj.id] = buildObj
+          newBuildsMap[buildObj.id] = buildObj
 
       })
 
+      return Object.values({
+
+          ...lastBuildsMap,
+          ...newBuildsMap,
+
+      }).map((build) => build.asMap())
   }
 
   #mergeBuilds(lastBuilds, newBuilds) {
