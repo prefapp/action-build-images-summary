@@ -7,7 +7,7 @@
  * It is responsible for get the summary of the check run, and merge the builds from the last summary.
  */
 
-import {Build} from "./build"
+const { Build } = require('./build')
 
 class CheckRun {
   #lastSummary
@@ -87,33 +87,34 @@ class CheckRun {
    * ]
    */
 
-  #mergeBuilds2(lastBuilds, newBuilds){
+  #mergeBuilds2(lastBuilds, newBuilds) {
+    const lastBuildsMap = {}
+    const newBuildsMap = {}
 
-      const lastBuildsMap = {}
-      const newBuildsMap = {}
+    lastBuilds.map(build => {
 
-      lastBuilds.forEach((build) => {
+      const buildObj = new Build(build)
 
-          const buildObj = new Build(build)
+      console.dir(buildObj.asMap())
 
-          lastBuildsMap[buildObj.id] = buildObj
+      lastBuildsMap[buildObj.id] = buildObj
+    })
 
-      })
+    newBuilds.map(build => {
+      const buildObj = new Build(build)
 
-      newBuilds.forEach((build) => {
+      newBuildsMap[buildObj.id] = buildObj
+    })
 
-          const buildObj = new Build(build)
+    const finalMap = Object.values({
+      
+        ...lastBuildsMap,
+      
+        ...newBuildsMap
 
-          newBuildsMap[buildObj.id] = buildObj
+    }).map(build => build.asMap())
 
-      })
-
-      return Object.values({
-
-          ...lastBuildsMap,
-          ...newBuildsMap,
-
-      }).map((build) => build.asMap())
+    return this.#textHelper.dumpYaml(finalMap)
   }
 
   #mergeBuilds(lastBuilds, newBuilds) {
