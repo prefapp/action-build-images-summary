@@ -29410,8 +29410,75 @@ module.exports = {
 
 /***/ }),
 
-/***/ 572:
+/***/ 4576:
 /***/ ((module) => {
+
+class Build {
+  build_args
+  flavor
+  image_repo
+  image_tag
+  image_type
+  registry
+  repository
+  version
+  workflow_run_id
+  workflow_run_url
+
+  constructor(args = {}) {
+    for (const key of ['flavor', 'image_type', 'registry', 'repository']) {
+      if (!args[key]) {
+        throw new Error(`Build needs a ${key} arg`)
+      }
+    }
+
+    this.build_args = args.build_args
+    this.flavor = args.flavor
+    this.image_repo = args.image_repo
+    this.image_tag = args.image_tag
+    this.image_type = args.image_type
+    this.registry = args.registry
+    this.repository = args.repository
+    this.version = args.version
+    this.workflow_run_id = args.workflow_run_id
+    this.workflow_run_url = args.workflow_run_url
+  }
+
+  get id() {
+    return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}`
+  }
+
+  asMap() {
+    const map = {}
+
+    for (const key of [
+      'build_args',
+      'flavor',
+      'image_repo',
+      'image_tag',
+      'image_type',
+      'registry',
+      'repository',
+      'version',
+      'workflow_run_id',
+      'workflow_run_url'
+    ]) {
+      map[key] = this[key]
+    }
+
+    return map
+  }
+}
+
+module.exports = {
+  Build
+}
+
+
+/***/ }),
+
+/***/ 572:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /**
  * This class is used to represent a check run, and it's part of the domain layer.
@@ -29421,6 +29488,9 @@ module.exports = {
  *
  * It is responsible for get the summary of the check run, and merge the builds from the last summary.
  */
+
+const { Build } = __nccwpck_require__(4576)
+
 class CheckRun {
   #lastSummary
   #newSummary
@@ -29452,7 +29522,7 @@ class CheckRun {
 
     const newBuilds = this.#parseNewBuildsFromNewSummary(this.#newSummary)
 
-    const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
+    const mergedBuilds = this.#mergeBuilds2(lastBuilds, newBuilds)
 
     return this.#dumpFinalSummary(mergedBuilds)
   }
@@ -29498,6 +29568,34 @@ class CheckRun {
    * }
    * ]
    */
+
+  #mergeBuilds2(lastBuilds, newBuilds) {
+    const lastBuildsMap = {}
+    const newBuildsMap = {}
+
+    lastBuilds.map(build => {
+      const buildObj = new Build(build)
+
+      console.dir(buildObj.asMap())
+
+      lastBuildsMap[buildObj.id] = buildObj
+    })
+
+    newBuilds.map(build => {
+      const buildObj = new Build(build)
+
+      newBuildsMap[buildObj.id] = buildObj
+    })
+
+    const finalMap = Object.values({
+      ...lastBuildsMap,
+
+      ...newBuildsMap
+    }).map(build => build.asMap())
+
+    return this.#textHelper.dumpYaml(finalMap)
+  }
+
   #mergeBuilds(lastBuilds, newBuilds) {
     try {
       console.info(`Merging builds for check run ${this.#name}`)

@@ -1,11 +1,10 @@
 ```yaml
 - build_args:
     BACKEND_URL: https://example.com
-  flavor: my-flavour-3
+  flavor: my-flavour-1
   image_repo: my-org/my-repo
   image_tag: v1.1.0-pre
   image_type: snapshots
-  manifest: {}
   registry: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre
@@ -15,17 +14,6 @@
   image_repo: my-org/my-repo
   image_tag: v1.1.0-pre
   image_type: snapshots
-  manifest: {}
-  registry: my-acr.azurecr.io
-  repository: service/my-org/my-repo
-  version: v1.1.0-pre
-- build_args:
-    BACKEND_URL: https://example.com
-  flavor: my-flavour-1
-  image_repo: my-org/my-repo
-  image_tag: v1.1.0-pre
-  image_type: snapshots
-  manifest: {}
   registry: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre
@@ -35,7 +23,15 @@
   image_repo: my-org/my-repo
   image_tag: v1.1.0-pre
   image_type: snapshots
-  manifest: {}
+  registry: my-acr.azurecr.io
+  repository: service/my-org/my-repo
+  version: v1.1.0-pre
+- build_args:
+    BACKEND_URL: https://example.com
+  flavor: my-flavour-3
+  image_repo: my-org/my-repo
+  image_tag: v1.1.0-pre
+  image_type: snapshots
   registry: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre

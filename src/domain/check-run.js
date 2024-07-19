@@ -92,7 +92,6 @@ class CheckRun {
     const newBuildsMap = {}
 
     lastBuilds.map(build => {
-
       const buildObj = new Build(build)
 
       console.dir(buildObj.asMap())
@@ -107,11 +106,9 @@ class CheckRun {
     })
 
     const finalMap = Object.values({
-      
-        ...lastBuildsMap,
-      
-        ...newBuildsMap
+      ...lastBuildsMap,
 
+      ...newBuildsMap
     }).map(build => build.asMap())
 
     return this.#textHelper.dumpYaml(finalMap)
