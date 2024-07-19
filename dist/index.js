@@ -29551,8 +29551,8 @@ class CheckRun {
   #lastBuildIsContainedInNewBuilds(lastBuild, newBuilds) {
     return newBuilds.find(
       newBuild =>
-        newBuild.flavor + newBuild.image_type ===
-        lastBuild.flavor + lastBuild.image_type
+        `${newBuild.flavor}-${newBuild.image_type}-${newBuild.registry}-${newBuild.repository}` ===
+        `${lastBuild.flavor}-${lastBuild.image_type}-${lastBuild.registry}-${lastBuild.repository}`
     )
   }
 
@@ -29601,7 +29601,7 @@ class CheckRun {
       image_tag: v1.1.0-pre
       image_type: snapshots
       manifest: {}
-      registries: my-acr.azurecr.io
+      registry: my-acr.azurecr.io
       repository: service/my-org/my-repo
       version: v1.1.0-pre
     * ```
