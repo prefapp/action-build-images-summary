@@ -6,6 +6,9 @@
  *
  * It is responsible for get the summary of the check run, and merge the builds from the last summary.
  */
+
+import {Build} from "./build"
+
 class CheckRun {
   #lastSummary
   #newSummary
@@ -37,7 +40,7 @@ class CheckRun {
 
     const newBuilds = this.#parseNewBuildsFromNewSummary(this.#newSummary)
 
-    const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
+    const mergedBuilds = this.#mergeBuilds2(lastBuilds, newBuilds)
 
     return this.#dumpFinalSummary(mergedBuilds)
   }
@@ -83,6 +86,30 @@ class CheckRun {
    * }
    * ]
    */
+
+  #mergeBuilds2(lastBuilds, newBuilds){
+
+      const lastBuildsMap = {}
+      const newBuildsMap = {}
+
+      lastBuilds.forEach((build) => {
+
+          const buildObj = new Build(build)
+
+          lastBuildsMap[buildObj.id] = buildObj
+
+      })
+
+      newBuilds.forEach((build) => {
+
+          const buildObj = new Build(build)
+
+          lastBuildsMap[buildObj.id] = buildObj
+
+      })
+
+  }
+
   #mergeBuilds(lastBuilds, newBuilds) {
     try {
       console.info(`Merging builds for check run ${this.#name}`)
