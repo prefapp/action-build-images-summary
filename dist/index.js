@@ -29410,8 +29410,75 @@ module.exports = {
 
 /***/ }),
 
-/***/ 572:
+/***/ 4576:
 /***/ ((module) => {
+
+class Build {
+  build_args
+  flavor
+  image_repo
+  image_tag
+  image_type
+  registry
+  repository
+  version
+  workflow_run_id
+  workflow_run_url
+
+  constructor(args = {}) {
+    for (const key of ['flavor', 'image_type', 'registry', 'repository']) {
+      if (!args[key]) {
+        throw new Error(`Build needs a ${key} arg`)
+      }
+    }
+
+    this.build_args = args.build_args
+    this.flavor = args.flavor
+    this.image_repo = args.image_repo
+    this.image_tag = args.image_tag
+    this.image_type = args.image_type
+    this.registry = args.registry
+    this.repository = args.repository
+    this.version = args.version
+    this.workflow_run_id = args.workflow_run_id
+    this.workflow_run_url = args.workflow_run_url
+  }
+
+  get id() {
+    return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}`
+  }
+
+  asMap() {
+    const map = {}
+
+    for (const key of [
+      'build_args',
+      'flavor',
+      'image_repo',
+      'image_tag',
+      'image_type',
+      'registry',
+      'repository',
+      'version',
+      'workflow_run_id',
+      'workflow_run_url'
+    ]) {
+      map[key] = this[key]
+    }
+
+    return map
+  }
+}
+
+module.exports = {
+  Build
+}
+
+
+/***/ }),
+
+/***/ 572:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /**
  * This class is used to represent a check run, and it's part of the domain layer.
@@ -29421,6 +29488,9 @@ module.exports = {
  *
  * It is responsible for get the summary of the check run, and merge the builds from the last summary.
  */
+
+const { Build } = __nccwpck_require__(4576)
+
 class CheckRun {
   #lastSummary
   #newSummary
@@ -29499,48 +29569,30 @@ class CheckRun {
    * ]
    */
   #mergeBuilds(lastBuilds, newBuilds) {
-    try {
-      console.info(`Merging builds for check run ${this.#name}`)
+    const lastBuildsMap = {}
+    const newBuildsMap = {}
 
-      const mergedBuilds = []
+    lastBuilds.map(build => {
+      const buildObj = new Build(build)
 
-      // Iterate over lastBuilds and merge with newBuilds
-      for (const lastBuild of lastBuilds) {
-        // Check if lastBuild is in newBuilds, based on flavor and registries
-        const newBuildMatch = this.#lastBuildIsContainedInNewBuilds(
-          lastBuild,
-          newBuilds
-        )
+      console.dir(buildObj.asMap())
 
-        if (newBuildMatch) {
-          console.info(
-            `Match found for build ${newBuildMatch.flavor} in check run ${this.#name}, updating build.`
-          )
+      lastBuildsMap[buildObj.id] = buildObj
+    })
 
-          // Get index of newBuild in newBuilds
-          const index = newBuilds.indexOf(newBuildMatch)
+    newBuilds.map(build => {
+      const buildObj = new Build(build)
 
-          // Remove newBuild from newBuilds and push it to mergedBuilds
-          mergedBuilds.push(newBuilds.pop(index))
-        } else {
-          console.info(
-            `No match found for build ${lastBuild.flavor} in check run ${this.#name}, keeping last build.`
-          )
+      newBuildsMap[buildObj.id] = buildObj
+    })
 
-          // If newBuild is not found, push lastBuild to mergedBuilds,
-          // in order to keep it in the summary.
-          mergedBuilds.push(lastBuild)
-        }
-      }
+    const finalMap = Object.values({
+      ...lastBuildsMap,
 
-      // Return mergedBuilds concatenated with remaining newBuilds,
-      // in yaml text format
-      return this.#textHelper.dumpYaml(mergedBuilds.concat(newBuilds))
-    } catch (error) {
-      console.error(error)
+      ...newBuildsMap
+    }).map(build => build.asMap())
 
-      throw new Error('Error merging builds.')
-    }
+    return this.#textHelper.dumpYaml(finalMap)
   }
 
   /**

@@ -5,8 +5,7 @@
   image_repo: my-org/my-repo
   image_tag: v1.1.0-pre
   image_type: snapshots
-  manifest: {}
-  registries: my-acr.azurecr.io
+  registry: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre
 - build_args:
@@ -15,8 +14,7 @@
   image_repo: my-org/my-repo
   image_tag: v1.1.0-pre
   image_type: snapshots
-  manifest: {}
-  registries: my-acr.azurecr.io
+  registry: my-acr.azurecr.io
   repository: service/my-org/my-repo
   version: v1.1.0-pre
 ```
