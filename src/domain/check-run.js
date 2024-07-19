@@ -40,7 +40,7 @@ class CheckRun {
 
     const newBuilds = this.#parseNewBuildsFromNewSummary(this.#newSummary)
 
-    const mergedBuilds = this.#mergeBuilds2(lastBuilds, newBuilds)
+    const mergedBuilds = this.#mergeBuilds(lastBuilds, newBuilds)
 
     return this.#dumpFinalSummary(mergedBuilds)
   }
@@ -86,8 +86,7 @@ class CheckRun {
    * }
    * ]
    */
-
-  #mergeBuilds2(lastBuilds, newBuilds) {
+  #mergeBuilds(lastBuilds, newBuilds) {
     const lastBuildsMap = {}
     const newBuildsMap = {}
 
@@ -112,51 +111,6 @@ class CheckRun {
     }).map(build => build.asMap())
 
     return this.#textHelper.dumpYaml(finalMap)
-  }
-
-  #mergeBuilds(lastBuilds, newBuilds) {
-    try {
-      console.info(`Merging builds for check run ${this.#name}`)
-
-      const mergedBuilds = []
-
-      // Iterate over lastBuilds and merge with newBuilds
-      for (const lastBuild of lastBuilds) {
-        // Check if lastBuild is in newBuilds, based on flavor and registries
-        const newBuildMatch = this.#lastBuildIsContainedInNewBuilds(
-          lastBuild,
-          newBuilds
-        )
-
-        if (newBuildMatch) {
-          console.info(
-            `Match found for build ${newBuildMatch.flavor} in check run ${this.#name}, updating build.`
-          )
-
-          // Get index of newBuild in newBuilds
-          const index = newBuilds.indexOf(newBuildMatch)
-
-          // Remove newBuild from newBuilds and push it to mergedBuilds
-          mergedBuilds.push(newBuilds.pop(index))
-        } else {
-          console.info(
-            `No match found for build ${lastBuild.flavor} in check run ${this.#name}, keeping last build.`
-          )
-
-          // If newBuild is not found, push lastBuild to mergedBuilds,
-          // in order to keep it in the summary.
-          mergedBuilds.push(lastBuild)
-        }
-      }
-
-      // Return mergedBuilds concatenated with remaining newBuilds,
-      // in yaml text format
-      return this.#textHelper.dumpYaml(mergedBuilds.concat(newBuilds))
-    } catch (error) {
-      console.error(error)
-
-      throw new Error('Error merging builds.')
-    }
   }
 
   /**
