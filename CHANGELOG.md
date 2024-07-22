@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.0.1...action-build-images-summary-v1.0.2) (2024-07-22)
+
+
+### Bug Fixes
+
+* preserve builds on diferent image tag ([#17](https://github.com/prefapp/action-build-images-summary/issues/17)) ([1a76ce3](https://github.com/prefapp/action-build-images-summary/commit/1a76ce3922fe8ee734081e47a5a43ec1fc137cdc))
+
 ## [1.0.1](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.0.0...action-build-images-summary-v1.0.1) (2024-07-19)
 
 
