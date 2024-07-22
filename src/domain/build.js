@@ -11,7 +11,13 @@ class Build {
   workflow_run_url
 
   constructor(args = {}) {
-    for (const key of ['flavor', 'image_type', 'registry', 'repository']) {
+    for (const key of [
+      'flavor',
+      'image_type',
+      'registry',
+      'repository',
+      'image_tag'
+    ]) {
       if (!args[key]) {
         throw new Error(`Build needs a ${key} arg`)
       }
@@ -30,7 +36,7 @@ class Build {
   }
 
   get id() {
-    return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}`
+    return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}-${this.image_tag}`
   }
 
   asMap() {
