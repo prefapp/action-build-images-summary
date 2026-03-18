@@ -2,7 +2,7 @@ const fs = require('fs')
 /**
  * This function is used to get the last summary of the check run.
  */
-async function getLastSummary(handler) {
+async function getLastSummary (handler) {
   return await handler.getLastSummary()
 }
 
@@ -13,7 +13,7 @@ async function getLastSummary(handler) {
  * @param {*} newSummaryPath {string}
  * @returns {Promise<void>} Resolves when the summary is updated.
  */
-async function updateSummary(
+async function updateSummary (
   lastCheckRun,
   handler,
   conclusion,
@@ -59,7 +59,7 @@ async function updateSummary(
  * @param {string} status - The status of the check run
  * @returns {Promise<void>} Resolves when the check run is created or updated.
  */
-async function upsertSummary(lastCheckRun, handler, status) {
+async function upsertSummary (lastCheckRun, handler, status) {
   // If the last check run does not exist, we need to create a new check run.
   if (!lastCheckRun) {
     await handler.createCheckRun('Pending...', status)
