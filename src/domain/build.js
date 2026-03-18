@@ -10,7 +10,7 @@ class Build {
   workflow_run_id
   workflow_run_url
 
-  constructor(args = {}) {
+  constructor (args = {}) {
     for (const key of [
       'flavor',
       'image_type',
@@ -35,11 +35,11 @@ class Build {
     this.workflow_run_url = args.workflow_run_url
   }
 
-  get id() {
+  get id () {
     return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}-${this.image_tag}`
   }
 
-  asMap() {
+  asMap () {
     const map = {}
 
     for (const key of [
