@@ -15,14 +15,14 @@ class CheckRun {
   #name
   #textHelper
 
-  constructor ({ lastSummary, newSummary, name, textHelper }) {
+  constructor({ lastSummary, newSummary, name, textHelper }) {
     this.#lastSummary = lastSummary
     this.#newSummary = newSummary
     this.#name = name
     this.#textHelper = textHelper
   }
 
-  get name () {
+  get name() {
     return this.#name
   }
 
@@ -32,7 +32,7 @@ class CheckRun {
    * @returns {string} The summary with the builds in yaml format,
    * merged from the last summary and the new summary.
    */
-  get summary () {
+  get summary() {
     if (!this.#lastSummary || this.#lastSummary === 'Pending...') {
       return this.#dumpFinalSummary(this.#newSummary)
     }
@@ -49,7 +49,7 @@ class CheckRun {
   /**
    * This method is used to get the last summary of the check run
    */
-  get lastSummary () {
+  get lastSummary() {
     return this.#extractYamlCodeFromMarkdown(this.#lastSummary)
   }
 
@@ -87,7 +87,7 @@ class CheckRun {
    * }
    * ]
    */
-  #mergeBuilds (lastBuilds, newBuilds) {
+  #mergeBuilds(lastBuilds, newBuilds) {
     const lastBuildsMap = {}
     const newBuildsMap = {}
 
@@ -121,7 +121,7 @@ class CheckRun {
    * The comparison is based on the flavor and registries of the builds.
    * @returns {object | undefined} The new build that matches the last build, or undefined if no match is found
    */
-  #lastBuildIsContainedInNewBuilds (lastBuild, newBuilds) {
+  #lastBuildIsContainedInNewBuilds(lastBuild, newBuilds) {
     return newBuilds.find(
       newBuild =>
         newBuild.flavor + newBuild.image_type ===
@@ -134,7 +134,7 @@ class CheckRun {
    * The summary is a string that contains the builds in yaml format.
    * @returns {Array} The builds extracted from the summary
    */
-  #extractBuildsFromLastSummary (summary) {
+  #extractBuildsFromLastSummary(summary) {
     try {
       const yamlText = this.#extractYamlCodeFromMarkdown(summary)
 
@@ -151,7 +151,7 @@ class CheckRun {
    * The summary is a string that contains the builds in yaml format.
    * @returns {Array} The builds extracted from the summary
    */
-  #parseNewBuildsFromNewSummary () {
+  #parseNewBuildsFromNewSummary() {
     try {
       return this.#textHelper.parseYaml(this.#newSummary)
     } catch (error) {
@@ -180,7 +180,7 @@ class CheckRun {
     * ```
     * @returns {string} The yaml code block extracted from the markdown summary
     */
-  #extractYamlCodeFromMarkdown (text) {
+  #extractYamlCodeFromMarkdown(text) {
     console.info('Extracting yaml code from markdown summary')
     console.info(text)
     const yamlDelimiter = '```yaml'
@@ -216,7 +216,7 @@ class CheckRun {
    * @returns {string} The final summary with the builds in yaml format,
    * contained within a code block, in a markdown format.
    */
-  #dumpFinalSummary (buildsYaml) {
+  #dumpFinalSummary(buildsYaml) {
     try {
       const yamlDelimiter = '```yaml'
 
