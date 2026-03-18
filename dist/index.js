@@ -29200,11 +29200,11 @@ const { CheckRun } = __nccwpck_require__(572)
  * It uses the GhHelper to get the last summary and update the check run
  */
 class CheckRunHandler {
-  //Helper objects
+  // Helper objects
   #ghHelper
   #textHelper
 
-  //Attributes
+  // Attributes
   #owner
   #repo
   #workflowName
@@ -29424,6 +29424,7 @@ class Build {
   version
   workflow_run_id
   workflow_run_url
+  platforms
 
   constructor(args = {}) {
     for (const key of [
@@ -29448,6 +29449,7 @@ class Build {
     this.version = args.version
     this.workflow_run_id = args.workflow_run_id
     this.workflow_run_url = args.workflow_run_url
+    this.platforms = args.platforms
   }
 
   get id() {
@@ -29467,7 +29469,8 @@ class Build {
       'repository',
       'version',
       'workflow_run_id',
-      'workflow_run_url'
+      'workflow_run_url',
+      'platforms'
     ]) {
       map[key] = this[key]
     }
@@ -29521,8 +29524,9 @@ class CheckRun {
    * merged from the last summary and the new summary.
    */
   get summary() {
-    if (!this.#lastSummary || this.#lastSummary === 'Pending...')
+    if (!this.#lastSummary || this.#lastSummary === 'Pending...') {
       return this.#dumpFinalSummary(this.#newSummary)
+    }
 
     const lastBuilds = this.#extractBuildsFromLastSummary(this.#lastSummary)
 
@@ -29581,15 +29585,17 @@ class CheckRun {
     lastBuilds.map(build => {
       const buildObj = new Build(build)
 
-      console.dir(buildObj.asMap())
-
       lastBuildsMap[buildObj.id] = buildObj
+
+      return buildObj
     })
 
     newBuilds.map(build => {
       const buildObj = new Build(build)
 
       newBuildsMap[buildObj.id] = buildObj
+
+      return buildObj
     })
 
     const finalMap = Object.values({
@@ -29663,10 +29669,10 @@ class CheckRun {
       repository: service/my-org/my-repo
       version: v1.1.0-pre
     * ```
-    * @returns {string} The yaml code block extracted from the markdown summary 
+    * @returns {string} The yaml code block extracted from the markdown summary
     */
   #extractYamlCodeFromMarkdown(text) {
-    console.info(`Extracting yaml code from markdown summary`)
+    console.info('Extracting yaml code from markdown summary')
     console.info(text)
     const yamlDelimiter = '```yaml'
 
@@ -29674,16 +29680,18 @@ class CheckRun {
 
     const yamlStartIndex = text.indexOf(yamlDelimiter)
 
-    if (yamlStartIndex === -1)
+    if (yamlStartIndex === -1) {
       throw new Error(`No YAML code block ${yamlDelimiter} found in summary`)
+    }
 
     const yamlEndIndex = text.indexOf(
       codeDelimiter,
       yamlStartIndex + yamlDelimiter.length
     )
 
-    if (yamlEndIndex === -1)
+    if (yamlEndIndex === -1) {
       throw new Error(`No code block end ${codeDelimiter} found in summary`)
+    }
 
     const yamlCode = text.slice(
       yamlStartIndex + yamlDelimiter.length,
@@ -29917,11 +29925,11 @@ class GhHelper {
     }
 
     if (conclusion) {
-      inputs['conclusion'] = conclusion
+      inputs.conclusion = conclusion
     }
 
     if (status) {
-      inputs['status'] = status
+      inputs.status = status
     }
 
     await this.#cli.rest.checks.update(inputs)
@@ -29969,7 +29977,6 @@ const {
   getLastSummary,
   upsertSummary
 } = __nccwpck_require__(585)
-const fs = __nccwpck_require__(7147)
 
 /**
  * The main function for the action.
