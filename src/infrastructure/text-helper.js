@@ -1,11 +1,11 @@
 const YAML = require('yaml')
 
 class TextHelper {
-  parseYaml (text) {
+  parseYaml(text) {
     return YAML.parse(text)
   }
 
-  dumpYaml (object) {
+  dumpYaml(object) {
     return YAML.stringify(object)
   }
 }

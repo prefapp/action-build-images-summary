@@ -17,7 +17,7 @@ class CheckRunHandler {
   #workflowName
   #ref
 
-  constructor ({ ghHelper, textHelper, owner, repo, workflowName, ref }) {
+  constructor({ ghHelper, textHelper, owner, repo, workflowName, ref }) {
     this.#ghHelper = ghHelper
     this.#textHelper = textHelper
     this.#owner = owner
@@ -29,7 +29,7 @@ class CheckRunHandler {
   /**
    * This method is used to create a new Check Run
    */
-  async createCheckRun (summary, status) {
+  async createCheckRun(summary, status) {
     await this.#ghHelper.createCheckRun({
       owner: this.#owner,
       repo: this.#repo,
@@ -47,7 +47,7 @@ class CheckRunHandler {
    * @returns {string} The merged summary with the builds in yaml format,
    * merged from the last summary and the new summary.
    */
-  async getMergedSummaries (newSummary, lastSummary) {
+  async getMergedSummaries(newSummary, lastSummary) {
     console.info(
       `Updating check run for ref: ${this.#ref} and workflow: ${this.#workflowName}`
     )
@@ -69,7 +69,7 @@ class CheckRunHandler {
    * @returns {string} The merged summary with the builds in yaml format,
    * merged from the last summary and the new summary.
    */
-  async getLastSummary () {
+  async getLastSummary() {
     console.info(
       `Get check run for ref: ${this.#ref} and workflow: ${this.#workflowName}`
     )
@@ -91,7 +91,7 @@ class CheckRunHandler {
    * It uses the GhHelper to get the last summary
    * @returns {string} The last summary of the check run
    */
-  async getLastCheckRun () {
+  async getLastCheckRun() {
     return await this.#ghHelper.getCheckRunFromRef({
       owner: this.#owner,
       repo: this.#repo,
@@ -105,7 +105,7 @@ class CheckRunHandler {
    * It uses the GhHelper to update the check run
    * @param {string} summary - The summary to be updated
    */
-  async updateCheckRun (summary, status, conclusion, id) {
+  async updateCheckRun(summary, status, conclusion, id) {
     const inputs = {
       owner: this.#owner,
       repo: this.#repo,

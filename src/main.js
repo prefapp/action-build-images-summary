@@ -10,7 +10,7 @@ const {
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
-async function run () {
+async function run() {
   try {
     const { handler, conclusion, newSummaryPath, op } = getContext()
     const lastCheckRun = await handler.getLastCheckRun()

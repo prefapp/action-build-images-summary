@@ -10,7 +10,7 @@ const core = require('@actions/core')
  *
  * @returns {CheckRunManager} The check run manager
  */
-function getContext () {
+function getContext() {
   const { token, checkRunName, ref, conclusion, newSummaryPath, op } =
     getCoreInputs()
 
@@ -44,7 +44,7 @@ function getContext () {
  * @returns {Object} The core inputs
  */
 
-function getCoreInputs () {
+function getCoreInputs() {
   const conclusion = core.getInput('conclusion', { required: true })
 
   const token = core.getInput('token', { required: true })
