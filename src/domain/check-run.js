@@ -216,7 +216,7 @@ class CheckRun {
    * @returns {string} The final summary with the builds in yaml format,
    * contained within a code block, in a markdown format.
    */
-  #dumpFinalSummary(buildsYaml) {
+  #dumpFinalSummary (buildsYaml) {
     try {
       const yamlDelimiter = '```yaml'
 
