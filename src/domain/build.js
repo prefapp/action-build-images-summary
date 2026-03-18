@@ -9,6 +9,7 @@ class Build {
   version
   workflow_run_id
   workflow_run_url
+  platforms
 
   constructor(args = {}) {
     for (const key of [
@@ -33,6 +34,7 @@ class Build {
     this.version = args.version
     this.workflow_run_id = args.workflow_run_id
     this.workflow_run_url = args.workflow_run_url
+    this.platforms = args.platforms
   }
 
   get id() {
@@ -52,7 +54,8 @@ class Build {
       'repository',
       'version',
       'workflow_run_id',
-      'workflow_run_url'
+      'workflow_run_url',
+      'platforms'
     ]) {
       map[key] = this[key]
     }

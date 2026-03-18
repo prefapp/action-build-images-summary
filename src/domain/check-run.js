@@ -33,8 +33,9 @@ class CheckRun {
    * merged from the last summary and the new summary.
    */
   get summary() {
-    if (!this.#lastSummary || this.#lastSummary === 'Pending...')
+    if (!this.#lastSummary || this.#lastSummary === 'Pending...') {
       return this.#dumpFinalSummary(this.#newSummary)
+    }
 
     const lastBuilds = this.#extractBuildsFromLastSummary(this.#lastSummary)
 
@@ -93,15 +94,17 @@ class CheckRun {
     lastBuilds.map(build => {
       const buildObj = new Build(build)
 
-      console.dir(buildObj.asMap())
-
       lastBuildsMap[buildObj.id] = buildObj
+
+      return buildObj
     })
 
     newBuilds.map(build => {
       const buildObj = new Build(build)
 
       newBuildsMap[buildObj.id] = buildObj
+
+      return buildObj
     })
 
     const finalMap = Object.values({
@@ -175,10 +178,10 @@ class CheckRun {
       repository: service/my-org/my-repo
       version: v1.1.0-pre
     * ```
-    * @returns {string} The yaml code block extracted from the markdown summary 
+    * @returns {string} The yaml code block extracted from the markdown summary
     */
   #extractYamlCodeFromMarkdown(text) {
-    console.info(`Extracting yaml code from markdown summary`)
+    console.info('Extracting yaml code from markdown summary')
     console.info(text)
     const yamlDelimiter = '```yaml'
 
@@ -186,16 +189,18 @@ class CheckRun {
 
     const yamlStartIndex = text.indexOf(yamlDelimiter)
 
-    if (yamlStartIndex === -1)
+    if (yamlStartIndex === -1) {
       throw new Error(`No YAML code block ${yamlDelimiter} found in summary`)
+    }
 
     const yamlEndIndex = text.indexOf(
       codeDelimiter,
       yamlStartIndex + yamlDelimiter.length
     )
 
-    if (yamlEndIndex === -1)
+    if (yamlEndIndex === -1) {
       throw new Error(`No code block end ${codeDelimiter} found in summary`)
+    }
 
     const yamlCode = text.slice(
       yamlStartIndex + yamlDelimiter.length,

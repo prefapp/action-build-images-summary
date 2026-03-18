@@ -118,11 +118,11 @@ class GhHelper {
     }
 
     if (conclusion) {
-      inputs['conclusion'] = conclusion
+      inputs.conclusion = conclusion
     }
 
     if (status) {
-      inputs['status'] = status
+      inputs.status = status
     }
 
     await this.#cli.rest.checks.update(inputs)

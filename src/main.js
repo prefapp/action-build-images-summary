@@ -5,7 +5,6 @@ const {
   getLastSummary,
   upsertSummary
 } = require('./application/summary-handler')
-const fs = require('fs')
 
 /**
  * The main function for the action.

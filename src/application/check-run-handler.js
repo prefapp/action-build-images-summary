@@ -7,11 +7,11 @@ const { CheckRun } = require('../domain/check-run')
  * It uses the GhHelper to get the last summary and update the check run
  */
 class CheckRunHandler {
-  //Helper objects
+  // Helper objects
   #ghHelper
   #textHelper
 
-  //Attributes
+  // Attributes
   #owner
   #repo
   #workflowName
