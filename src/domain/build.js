@@ -11,7 +11,7 @@ class Build {
   workflow_run_url
   platforms
 
-  constructor(args = {}) {
+  constructor (args = {}) {
     for (const key of [
       'flavor',
       'image_type',
@@ -37,11 +37,11 @@ class Build {
     this.platforms = args.platforms
   }
 
-  get id() {
+  get id () {
     return `${this.flavor}-${this.image_type}-${this.registry}-${this.repository}-${this.image_tag}`
   }
 
-  asMap() {
+  asMap () {
     const map = {}
 
     for (const key of [

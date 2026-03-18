@@ -1,7 +1,7 @@
 class GhHelper {
   #cli
 
-  constructor({ cli }) {
+  constructor ({ cli }) {
     this.#cli = cli
   }
 
@@ -13,7 +13,7 @@ class GhHelper {
    * @param {string} workflowName - The name of the workflow
    * @returns {Object} The check run summary
    */
-  async getCheckRunFromRef({ owner, repo, ref, workflowName }) {
+  async getCheckRunFromRef ({ owner, repo, ref, workflowName }) {
     try {
       console.info(
         `Getting check run summary for ref: ${ref} and workflow: ${workflowName}`
@@ -68,7 +68,7 @@ class GhHelper {
    * @param {string} status  The status, can be 'queued', 'in_progress', or 'completed'
    * @returns
    */
-  async createCheckRun({ owner, repo, ref, name, summary, status }) {
+  async createCheckRun ({ owner, repo, ref, name, summary, status }) {
     console.info(`Creating check run for ref: ${ref} and workflow: ${name}`)
 
     const { data } = await this.#cli.rest.checks.create({
@@ -98,7 +98,7 @@ class GhHelper {
    * @param {string} summary - The summary of the check run
    * @param {string} id - The id of the check run
    */
-  async updateCheckRun({ owner, repo, conclusion, status, summary, name, id }) {
+  async updateCheckRun ({ owner, repo, conclusion, status, summary, name, id }) {
     console.info(`Updating check run for id: ${id}`)
 
     console.log('CONCLUSION', conclusion)
@@ -118,11 +118,11 @@ class GhHelper {
     }
 
     if (conclusion) {
-      inputs['conclusion'] = conclusion
+      inputs.conclusion = conclusion
     }
 
     if (status) {
-      inputs['status'] = status
+      inputs.status = status
     }
 
     await this.#cli.rest.checks.update(inputs)
