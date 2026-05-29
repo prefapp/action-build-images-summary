@@ -137,5 +137,5 @@ You can find the following layers.
 - **Application**: `./src/application`
   - CheckRunHandler
 - **Infrastructure**: `./src/infrastructure`
-  - Yaml package
-  - Github Cli (octokit, core)
+  - YAML package
+  - GitHub CLI (octokit, core)
