@@ -28,7 +28,7 @@ steps:
       op: 'init-check-run'
 
   - name: Checkout repository to get config file
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
       path: config
 
