@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.1.0...action-build-images-summary-v1.2.0) (2026-06-01)
+
+
+### Features
+
+* **action-build-images-summary:** update to node24 ([#37](https://github.com/prefapp/action-build-images-summary/issues/37)) ([d701b96](https://github.com/prefapp/action-build-images-summary/commit/d701b96130ba970c8c651cd533bb5f3ddca7971d))
+
 ## [1.1.0](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.0.2...action-build-images-summary-v1.1.0) (2026-03-18)
 
 
