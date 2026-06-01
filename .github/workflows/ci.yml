@@ -9,8 +9,8 @@ on:
       - main
 
 permissions:
-  contents: read
   checks: write
+  contents: read
 
 jobs:
   test-javascript:
@@ -20,11 +20,11 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
           cache: npm
@@ -47,12 +47,15 @@ jobs:
 
   test-action:
     name: GitHub Actions Test
+    if:
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - uses: LouisBrunner/checks-action@v2.0.0
         name: Rewrite summary
