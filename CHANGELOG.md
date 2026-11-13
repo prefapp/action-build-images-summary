@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.2.0...action-build-images-summary-v1.2.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* validate release-please pipeline ([c0b5643](https://github.com/prefapp/action-build-images-summary/commit/c0b5643d52e4ce2f754d9304630fca4347fe5f7b))
+
 ## [1.2.0](https://github.com/prefapp/action-build-images-summary/compare/action-build-images-summary-v1.1.0...action-build-images-summary-v1.2.0) (2026-06-01)
 
 
